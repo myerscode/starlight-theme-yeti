@@ -1,0 +1,13 @@
+---
+import MobileMenuFooter from "virtual:starlight/components/MobileMenuFooter";
+import SidebarSublist from "./SidebarSublist.astro";
+
+const { sidebar } = Astro.locals.starlightRoute;
+---
+
+<div class="flex h-full flex-col px-3 py-4">
+  <SidebarSublist sublist={sidebar} nestedCount={0} />
+  <div class="mt-auto border-t border-slate-200 pt-4 dark:border-slate-800 md:hidden">
+    <MobileMenuFooter {...Astro.props} />
+  </div>
+</div>

@@ -1,0 +1,128 @@
+---
+const { toc } = Astro.locals.starlightRoute;
+---
+
+{toc && (
+  <starlight-toc data-min-h={toc.minHeadingLevel} data-max-h={toc.maxHeadingLevel}>
+    <nav aria-labelledby="starlight__on-this-page" class="toc">
+      <h2 id="starlight__on-this-page" class="toc-heading">On this page</h2>
+      <ul class="toc-list">
+        {toc.items.map((heading) => (
+          <li>
+            <a href={`#${heading.slug}`} class="toc-link">
+              {heading.text}
+            </a>
+            {heading.children.length > 0 && (
+              <ul class="toc-sublist">
+                {heading.children.map((child) => (
+                  <li>
+                    <a href={`#${child.slug}`} class="toc-link toc-link-child">
+                      {child.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </starlight-toc>
+)}
+
+<style>
+  .toc-heading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--sl-color-gray-3);
+    margin-bottom: 0.75rem;
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .toc-sublist {
+    list-style: none;
+    padding: 0;
+    margin: 0.125rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .toc-link {
+    display: block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--sl-color-gray-2);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .toc-link:hover {
+    color: var(--sl-color-white);
+  }
+
+  .toc-link[aria-current="true"] {
+    color: var(--sl-color-text-accent);
+    font-weight: 500;
+  }
+
+  .toc-link-child {
+    padding-left: 1.25rem;
+    font-size: 0.75rem;
+  }
+</style>
+
+<script>
+  // Starlight's TOC scroll tracking — sets aria-current on the active heading link
+  class StarlightTOC extends HTMLElement {
+    connectedCallback() {
+      const links = [...this.querySelectorAll('a')];
+      if (!links.length) return;
+
+      const setCurrent = (slug: string) => {
+        links.forEach((link) => {
+          link.setAttribute('aria-current', String(link.getAttribute('href') === `#${slug}`));
+        });
+      };
+
+      const headings = links
+        .map((link) => {
+          const id = link.getAttribute('href')?.slice(1);
+          return id ? document.getElementById(id) : null;
+        })
+        .filter(Boolean) as HTMLElement[];
+
+      if (!headings.length) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              setCurrent(entry.target.id);
+              break;
+            }
+          }
+        },
+        { rootMargin: '-80px 0px -70% 0px' }
+      );
+
+      headings.forEach((h) => observer.observe(h));
+    }
+  }
+
+  if (!customElements.get('starlight-toc')) {
+    customElements.define('starlight-toc', StarlightTOC);
+  }
+</script>

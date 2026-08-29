@@ -1,0 +1,95 @@
+---
+import { logos } from 'virtual:starlight/user-images';
+import config from 'virtual:starlight/user-config';
+import Search from "virtual:starlight/components/Search";
+import SocialIcons from "virtual:starlight/components/SocialIcons";
+import ThemeSelect from "./ThemeSelect.astro";
+
+const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
+---
+
+<div class="flex w-full items-center justify-between gap-6 px-2">
+  <!-- Brand -->
+  <a href={siteTitleHref || "/"} class="flex items-center gap-2.5 text-lg font-bold tracking-tight text-slate-900 no-underline dark:text-white">
+    {config.logo && logos.dark && (
+      <>
+        <img
+          class:list={["h-7 w-auto", { "light:sl-hidden": !('src' in config.logo) }]}
+          alt={config.logo.alt}
+          src={logos.dark.src}
+          width={logos.dark.width}
+          height={logos.dark.height}
+        />
+        {!('src' in config.logo) && (
+          <img
+            class="h-7 w-auto dark:sl-hidden"
+            alt={config.logo.alt}
+            src={logos.light?.src}
+            width={logos.light?.width}
+            height={logos.light?.height}
+          />
+        )}
+      </>
+    )}
+    <span class:list={{ "sr-only": config.logo?.replacesTitle }}>{siteTitle}</span>
+  </a>
+
+  <!-- Right side -->
+  <div class="flex items-center gap-5">
+    <!-- Search -->
+    <div class="search-wrapper">
+      <Search {...Astro.props} />
+    </div>
+
+    <!-- Separator -->
+    <div class="h-6 w-px bg-slate-200 dark:bg-slate-700"></div>
+
+    <!-- Icons -->
+    <div class="flex items-center gap-5">
+      <SocialIcons {...Astro.props} />
+      <div class="h-6 w-px bg-slate-200 dark:bg-slate-700"></div>
+      <ThemeSelect />
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Style Starlight's search button to look like an input field */
+  .search-wrapper :global(button[data-open-modal]) {
+    border: 1px solid var(--sl-color-gray-5) !important;
+    border-radius: 9999px !important;
+    padding: 0.4rem 0.875rem !important;
+    background: var(--sl-color-gray-6) !important;
+    font-size: var(--sl-text-sm) !important;
+    color: var(--sl-color-gray-3) !important;
+    gap: 0.5rem !important;
+    min-width: 12rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .search-wrapper :global(button[data-open-modal]:hover) {
+    border-color: var(--sl-color-text-accent) !important;
+  }
+
+  /* Social icon sizing */
+  .flex :global(.sl-flex.social-icons) {
+    gap: 0.75rem;
+  }
+
+  .flex :global(.sl-flex.social-icons a) {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    color: var(--sl-color-gray-2);
+    transition: color 0.15s, background-color 0.15s;
+  }
+
+  .flex :global(.sl-flex.social-icons a:hover) {
+    color: var(--sl-color-white);
+    background-color: var(--sl-color-gray-5);
+  }
+
+  .flex :global(.sl-flex.social-icons a svg) {
+    width: 24px;
+    height: 24px;
+  }
+</style>

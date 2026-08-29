@@ -1,0 +1,11 @@
+---
+import TableOfContents from "virtual:starlight/components/TableOfContents";
+const { toc } = Astro.locals.starlightRoute;
+const hasToc = toc && toc.items.length > 0;
+---
+
+{hasToc && (
+  <nav aria-label="On this page">
+    <TableOfContents {...Astro.props} />
+  </nav>
+)}

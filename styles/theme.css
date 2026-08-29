@@ -1,0 +1,82 @@
+/* Ensure Starlight markdown content styles aren't nuked by preflight */
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.sl-markdown-content h4,
+.sl-markdown-content h5,
+.sl-markdown-content h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.sl-markdown-content p {
+  margin-bottom: 1em;
+}
+
+.sl-markdown-content ul,
+.sl-markdown-content ol {
+  margin-bottom: 1em;
+  padding-left: 1.5em;
+}
+
+.sl-markdown-content ul {
+  list-style: disc;
+}
+
+.sl-markdown-content ol {
+  list-style: decimal;
+}
+
+.sl-markdown-content li {
+  margin-bottom: 0.25em;
+}
+
+.sl-markdown-content a {
+  color: var(--sl-color-text-accent);
+  text-decoration: underline;
+}
+
+.sl-markdown-content blockquote {
+  border-left: 3px solid var(--sl-color-gray-4);
+  padding-left: 1em;
+  color: var(--sl-color-gray-2);
+  margin-bottom: 1em;
+}
+
+.sl-markdown-content code {
+  font-size: 0.875em;
+  background: var(--sl-color-gray-6);
+  padding: 0.125em 0.375em;
+  border-radius: 0.25rem;
+}
+
+.sl-markdown-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.sl-markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+}
+
+.sl-markdown-content th,
+.sl-markdown-content td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--sl-color-gray-5);
+  text-align: left;
+}
+
+.sl-markdown-content th {
+  font-weight: 600;
+  background: var(--sl-color-gray-6);
+}
+
+.sl-markdown-content hr {
+  border: none;
+  border-top: 1px solid var(--sl-color-gray-5);
+  margin: 2em 0;
+}

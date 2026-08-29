@@ -1,0 +1,84 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Link { type: "link"; label: string; href: string; isCurrent: boolean; badge: any; attrs: Record<string, any>; }
+interface Group { type: "group"; label: string; entries: (Link | Group)[]; collapsed: boolean; badge: any; }
+type SidebarEntry = Link | Group;
+
+interface Props { sublist: SidebarEntry[]; nested?: boolean; nestedCount: number; }
+const { sublist, nested, nestedCount } = Astro.props;
+
+function parseIcon(label: string) {
+  const match = label.match(/^\[([^\]]+)\]\s*(.*)$/);
+  return match ? { icon: match[1], text: match[2] } : { icon: null, text: label };
+}
+
+function findIndexEntry(entries: SidebarEntry[]): Link | null {
+  for (const e of entries) if (e.type === "link" && e.attrs?.["data-index"] === "true") return e;
+  const links = entries.filter((e): e is Link => e.type === "link");
+  if (links.length > 1) for (const l of links) { const h = l.href.replace(/\/$/, ""); if (links.some(o => o !== l && o.href.startsWith(h + "/"))) return l; }
+  return null;
+}
+---
+
+<ul class:list={[nested ? "mt-1 space-y-0.5 border-l border-slate-200 pl-3 dark:border-slate-800" : "space-y-1"]}>
+  {sublist.map((entry) => {
+    if (entry.type === "link") {
+      const { icon, text } = parseIcon(entry.label);
+      return (
+        <li>
+          <a
+            href={entry.href}
+            aria-current={entry.isCurrent && "page"}
+            class:list={[
+              "flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm no-underline transition-colors",
+              entry.isCurrent
+                ? "bg-indigo-50 font-medium text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300"
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/50 dark:hover:text-slate-200",
+            ]}
+          >
+            {icon && <Icon name={icon} width="16" height="16" class="shrink-0 opacity-70" />}
+            <span>{text}</span>
+          </a>
+        </li>
+      );
+    }
+
+    const indexEntry = findIndexEntry(entry.entries);
+    const childEntries = indexEntry ? entry.entries.filter(e => e !== indexEntry) : entry.entries;
+    const { icon: gIcon, text: gText } = parseIcon(entry.label);
+    const isGroupActive = indexEntry?.isCurrent || false;
+
+    return (
+      <li class={!nested ? "pt-3 first:pt-0" : ""}>
+        <details open class="group">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-1 rounded-md px-2.5 py-1.5 [&::-webkit-details-marker]:hidden">
+            {indexEntry ? (
+              <a
+                href={indexEntry.href}
+                aria-current={isGroupActive && "page"}
+                class:list={[
+                  "flex flex-1 items-center gap-2 text-sm font-semibold no-underline transition-colors",
+                  isGroupActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-900 hover:text-indigo-700 dark:text-slate-100 dark:hover:text-indigo-300",
+                ]}
+                onclick="event.stopPropagation()"
+              >
+                {gIcon && <Icon name={gIcon} width="16" height="16" class="shrink-0 opacity-70" />}
+                <span>{gText}</span>
+              </a>
+            ) : (
+              <span class="flex flex-1 items-center gap-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
+                {gIcon && <Icon name={gIcon} width="16" height="16" class="shrink-0 opacity-70" />}
+                <span>{gText}</span>
+              </span>
+            )}
+            <svg class="h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 group-open:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" /></svg>
+          </summary>
+          <div class="ml-1 mt-1">
+            <Astro.self sublist={childEntries} nested nestedCount={nestedCount + 1} />
+          </div>
+        </details>
+      </li>
+    );
+  })}
+</ul>

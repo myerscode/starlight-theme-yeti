@@ -1,0 +1,36 @@
+---
+import { Image } from "astro:assets";
+import CallToAction from "./CallToAction.astro";
+
+const { data } = Astro.locals.starlightRoute.entry;
+const { title = data.title, tagline, image, actions = [] } = data.hero || {};
+const base = (import.meta.env.BASE_URL || '/').replace(/\/?$/, '/');
+
+const imageAttrs = { loading: "eager" as const, decoding: "async" as const, width: 400, height: 400, alt: image?.alt || "" };
+let darkImage: ImageMetadata | undefined;
+let lightImage: ImageMetadata | undefined;
+let rawHtml: string | undefined;
+if (image) { if ("file" in image) darkImage = image.file; else if ("dark" in image) { darkImage = image.dark; lightImage = image.light; } else rawHtml = image.html; }
+
+// Fix absolute paths in raw HTML to include base
+if (rawHtml) {
+  rawHtml = rawHtml.replace(/src="\/([^"]*)"/, `src="${base}$1"`);
+}
+---
+
+<div class="flex flex-col items-center gap-8 border-b border-slate-200 px-6 py-12 dark:border-slate-800 md:flex-row lg:px-10">
+  <div class="flex flex-1 flex-col gap-4">
+    <h1 id="_top" data-page-title class="text-4xl font-bold tracking-tight text-slate-900 dark:text-white md:text-5xl">
+      {title}
+    </h1>
+    {tagline && <p class="text-lg text-slate-600 dark:text-slate-400" set:html={tagline} />}
+    {actions.length > 0 && (
+      <div class="mt-2 flex flex-wrap gap-3">
+        {actions.map(({ text, ...attrs }: any) => <CallToAction {...attrs} set:html={text} />)}
+      </div>
+    )}
+  </div>
+  {darkImage && <Image src={darkImage} {...imageAttrs} class:list={["w-full max-w-xs", { "light:sl-hidden": Boolean(lightImage) }]} />}
+  {lightImage && <Image src={lightImage} {...imageAttrs} class="w-full max-w-xs dark:sl-hidden" />}
+  {rawHtml && <div class="w-full max-w-xs" set:html={rawHtml} />}
+</div>

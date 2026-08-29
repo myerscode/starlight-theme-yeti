@@ -1,0 +1,13 @@
+---
+import Pagination from "./Pagination.astro";
+import EditLink from "./EditLink.astro";
+import LastUpdated from "./LastUpdated.astro";
+---
+
+<footer class="border-t border-slate-200 dark:border-slate-800">
+  <Pagination {...Astro.props} />
+  <div class="flex items-center justify-between gap-4 px-6 pb-6 text-sm lg:px-10">
+    <EditLink {...Astro.props} />
+    <LastUpdated {...Astro.props} />
+  </div>
+</footer>

@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@source "../components/**/*.astro";
+@source "../../src/content/docs/**/*.md";
+@source "../../docs/**/*.md";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));

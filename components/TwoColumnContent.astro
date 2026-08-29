@@ -1,0 +1,13 @@
+---
+---
+
+<div class="flex">
+  <div class="min-w-0 flex-1">
+    <slot />
+  </div>
+  <aside class="hidden w-56 shrink-0 border-l border-slate-200 dark:border-slate-800 xl:block">
+    <div class="sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto px-4 py-8">
+      <slot name="right-sidebar" />
+    </div>
+  </aside>
+</div>

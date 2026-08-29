@@ -1,0 +1,8 @@
+---
+const { data } = Astro.locals.starlightRoute.entry;
+const banner = data.banner;
+---
+
+{banner && (
+  <div class="border-b border-indigo-200 bg-indigo-50 px-4 py-2.5 text-center text-sm text-indigo-900 dark:border-indigo-800 dark:bg-indigo-950/50 dark:text-indigo-200" set:html={banner.content} />
+)}

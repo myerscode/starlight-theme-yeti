@@ -1,0 +1,52 @@
+{
+  "name": "@myerscode/starlight-theme-yeti",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "A clean, modern Starlight theme with Tailwind CSS styling, icon support, and collapsible linked sidebar groups.",
+  "license": "MIT",
+  "author": "Myerscode",
+  "homepage": "https://github.com/myerscode/starlight-theme-yeti#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myerscode/starlight-theme-yeti.git"
+  },
+  "bugs": {
+    "url": "https://github.com/myerscode/starlight-theme-yeti/issues"
+  },
+  "keywords": [
+    "starlight",
+    "astro",
+    "theme",
+    "tailwind",
+    "documentation"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "index.ts",
+    "sidebar.ts",
+    "components",
+    "styles",
+    "assets",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": "./index.ts",
+    "./sidebar": "./sidebar.ts",
+    "./components/*": "./components/*",
+    "./styles/*": "./styles/*",
+    "./assets/*": "./assets/*"
+  },
+  "dependencies": {
+    "@astrojs/starlight-tailwind": "^5.0.0",
+    "astro-icon": "^1.1.0",
+    "tailwindcss": "^4.3.0",
+    "@tailwindcss/vite": "^4.3.0"
+  },
+  "peerDependencies": {
+    "@astrojs/starlight": "^0.41.0",
+    "astro": "^7.0.0"
+  }
+}
