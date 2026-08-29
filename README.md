@@ -75,6 +75,15 @@ starlightThemeYeti({
 })
 ```
 
+## Example
+
+A demo site showcasing every component and setting lives in [`example/`](./example/). It consumes the theme source directly, so it doubles as a development playground:
+
+```sh
+pnpm install
+cd example && pnpm dev
+```
+
 ## License
 
 MIT
