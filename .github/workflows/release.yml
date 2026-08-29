@@ -32,7 +32,7 @@ jobs:
         run: |
           VERSION="${INPUT_VERSION#v}"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Validate version format
         env:
@@ -79,7 +79,7 @@ jobs:
         env:
           CURRENT: ${{ steps.version.outputs.tag }}
         run: |
-          PREVIOUS=$(git tag --list --sort=-version:refname 'v[0-9]*' | grep -v "^${CURRENT}$" | head -1)
+          PREVIOUS=$(git tag --list --sort=-version:refname '[0-9]*' | grep -v "^${CURRENT}$" | head -1)
           if [ -n "$PREVIOUS" ]; then
             echo "tag=$PREVIOUS" >> "$GITHUB_OUTPUT"
             echo "found=true" >> "$GITHUB_OUTPUT"
