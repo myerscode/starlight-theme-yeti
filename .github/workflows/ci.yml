@@ -23,3 +23,15 @@ jobs:
       # Validates the manifest and that everything in "files" resolves
       - name: Verify package contents
         run: npm pack --dry-run
+
+      # corepack is not bundled with Node 25+, so install pnpm via npm
+      - name: Install pnpm
+        run: npm install -g pnpm@11
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Compiles the theme's components against a real Starlight site
+      - name: Build example site
+        working-directory: example
+        run: pnpm run build
