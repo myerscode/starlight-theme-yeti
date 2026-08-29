@@ -43,17 +43,6 @@ jobs:
             exit 1
           fi
 
-      # Local tag is needed for changelog generation; remote ref is created via the API
-      - name: Create tag
-        env:
-          GH_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
-          TAG: ${{ steps.version.outputs.tag }}
-        run: |
-          git tag "$TAG"
-          gh api "repos/${GITHUB_REPOSITORY}/git/refs" \
-            -f ref="refs/tags/${TAG}" \
-            -f sha="$(git rev-parse HEAD)"
-
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
@@ -72,6 +61,18 @@ jobs:
       # Authenticates via OIDC trusted publishing — no npm token needed
       - name: Publish to NPM
         run: npm publish --provenance --access public
+
+      # Tag only after a successful publish, so failed runs leave nothing to clean up.
+      # Local tag is needed for changelog generation; remote ref is created via the API
+      - name: Create tag
+        env:
+          GH_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          git tag "$TAG"
+          gh api "repos/${GITHUB_REPOSITORY}/git/refs" \
+            -f ref="refs/tags/${TAG}" \
+            -f sha="$(git rev-parse HEAD)"
 
       - name: Get previous tag
         id: previous
