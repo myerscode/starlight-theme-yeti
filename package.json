@@ -1,6 +1,6 @@
 {
   "name": "@myerscode/starlight-theme-yeti",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "A clean, modern Starlight theme with Tailwind CSS styling, icon support, and collapsible linked sidebar groups.",
   "license": "MIT",
