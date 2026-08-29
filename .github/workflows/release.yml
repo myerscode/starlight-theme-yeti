@@ -1,0 +1,86 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '26'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Set version from tag
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          VERSION="${TAG#v}"
+          if ! echo "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "❌ Error: Tag must be in the format vMAJOR.MINOR.PATCH (e.g. v0.2.0)"
+            exit 1
+          fi
+          npm version "$VERSION" --no-git-tag-version --allow-same-version
+
+      - name: Publish to NPM
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+
+      - name: Get previous tag
+        id: previous
+        run: |
+          CURRENT="${GITHUB_REF_NAME}"
+          PREVIOUS=$(git tag --list --sort=-version:refname 'v[0-9]*' | grep -v "^${CURRENT}$" | head -1)
+          if [ -n "$PREVIOUS" ]; then
+            echo "tag=$PREVIOUS" >> "$GITHUB_OUTPUT"
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=" >> "$GITHUB_OUTPUT"
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate changelog
+        if: steps.previous.outputs.found == 'true'
+        id: changelog
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          fromTag: ${{ github.ref_name }}
+          toTag: ${{ steps.previous.outputs.tag }}
+          excludeTypes: build,docs,other,style,ci,chore
+          useGitmojis: false
+          writeToFile: false
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.changes || 'Initial release' }}
+
+      # Commits via the GitHub API are signed by GitHub and show as Verified
+      - name: Commit version bump
+        uses: planetscale/ghcommit-action@v0.2.22
+        with:
+          commit_message: "chore: release ${{ github.ref_name }}"
+          repo: ${{ github.repository }}
+          branch: main
+          file_pattern: package.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
