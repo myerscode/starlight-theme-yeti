@@ -26,4 +26,6 @@ banner:
 
 ## Hero and CallToAction
 
-Used on `template: splash` pages — see the [homepage](/) for the hero title, tagline, image, and the three action button variants (`primary`, `secondary`, `minimal`).
+Used on `template: splash` pages — see the [homepage](/) for the hero title, tagline, and the three action button variants (`primary`, `secondary`, `minimal`). Heroes also support an `image` (`file`, `light`/`dark`, or raw `html`).
+
+The `Hero` override additionally brands [the 404 page](/this-page-does-not-exist) with the theme's artwork automatically — no `404.md` needed in your project. Add your own `404.md` with a `hero.image` to replace it.

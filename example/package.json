@@ -8,12 +8,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "7.2.0",
     "@astrojs/starlight": "0.41.7",
-    "astro-icon": "1.1.5",
     "@iconify-json/lucide": "1.2.123",
-    "tailwindcss": "4.3.3",
+    "@myerscode/starlight-theme-yeti": "workspace:*",
     "@tailwindcss/vite": "4.3.3",
-    "@myerscode/starlight-theme-yeti": "workspace:*"
+    "astro": "7.2.0",
+    "astro-icon": "1.1.5",
+    "tailwindcss": "4.3.3"
   }
 }
