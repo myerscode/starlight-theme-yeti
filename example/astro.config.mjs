@@ -57,6 +57,8 @@ export default defineConfig({
           //   Footer: './src/components/MyFooter.astro', // use your own component
           //   Hero: false,                               // fall back to Starlight's default
           // },
+          // Use your own 404 artwork (or `false` to disable it):
+          // notFoundImage: './src/assets/not-found.svg',
         }),
       ],
     }),

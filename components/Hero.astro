@@ -1,8 +1,10 @@
 ---
 import { Image } from "astro:assets";
 import CallToAction from "./CallToAction.astro";
-// Imported as a URL so the theme never pulls the image pipeline (sharp) into consumer builds
-import notFoundArtUrl from "../assets/404.svg?url";
+// Plugin options surfaced at render time; the image is a plain URL asset so
+// the theme never pulls the image pipeline (sharp) into consumer builds
+// @ts-ignore — virtual module provided by the plugin's Vite integration
+import { notFoundImage } from "virtual:starlight-theme-yeti/config";
 
 const { entry, id } = Astro.locals.starlightRoute;
 const { data } = entry;
@@ -16,8 +18,9 @@ let rawHtml: string | undefined;
 if (image) { if ("file" in image) darkImage = image.file; else if ("dark" in image) { darkImage = image.dark; lightImage = image.light; } else rawHtml = image.html; }
 
 // Starlight's built-in 404 route renders a hero with no image — brand it with
-// the theme's artwork. A user 404 page setting its own hero image wins above.
-const notFoundArt = !image && id === "404" ? notFoundArtUrl : undefined;
+// the configured artwork (`notFoundImage` option, theme default, or `false`
+// to disable). A user 404 page setting its own hero image wins above.
+const notFoundArt = !image && id === "404" && notFoundImage ? notFoundImage : undefined;
 
 // Fix absolute paths in raw HTML to include base
 if (rawHtml) {

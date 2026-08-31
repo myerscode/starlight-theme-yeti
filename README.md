@@ -73,6 +73,9 @@ starlightThemeYeti({
     // Disable an override and fall back to Starlight's default
     Hero: false,
   },
+  // Image for the built-in 404 page: a path relative to your project root,
+  // or `false` to disable it. Defaults to the theme's artwork.
+  notFoundImage: './src/assets/not-found.svg',
 })
 ```
 

@@ -7,7 +7,23 @@ sidebar:
 
 ## Plugin options
 
-The plugin accepts one option: `overrides`. It controls the 18 component overrides the theme registers.
+### `notFoundImage`
+
+The theme brands the built-in 404 page with its own artwork. Point it at your own image, or turn it off:
+
+```js
+// Path relative to your project root
+starlightThemeYeti({ notFoundImage: './src/assets/not-found.svg' })
+
+// or disable the image entirely
+starlightThemeYeti({ notFoundImage: false })
+```
+
+A `404.md` in your project that sets a `hero.image` always wins over this option.
+
+### `overrides`
+
+Controls the 18 component overrides the theme registers.
 
 ```js
 starlightThemeYeti({
