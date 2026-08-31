@@ -19,21 +19,24 @@ Regular paragraph text with **bold**, *italic*, `inline code`, and [a link](../g
 
 ## Code Blocks
 
-```typescript
+Rendered by [Expressive Code](https://expressive-code.com/) with the `github-light-default` / `github-dark-default` themes — see [Theme Settings](/guides/settings/#code-block-theming) to swap them.
+
+```typescript title="index.ts" ins={5} del={2} {8-9}
 import starlightThemeYeti from '@myerscode/starlight-theme-yeti';
+import unused from 'somewhere';
 
 interface YetiThemeConfig {
+  notFoundImage?: string | false;
   overrides?: Partial<Record<string, string | false>>;
 }
 
 const plugin = starlightThemeYeti({ overrides: { Hero: false } });
 ```
 
-```yaml
-integrations:
-  - starlight:
-      plugins:
-        - starlightThemeYeti
+
+```yaml frame="terminal" title="terminal"
+pnpm install @myerscode/starlight-theme-yeti
+pnpm dev
 ```
 
 ## Tables

@@ -83,6 +83,38 @@ export default function starlightThemeYeti(config?: YetiThemeConfig): StarlightP
           },
         });
 
+        // Expressive-Code — apply theme's syntax themes + chrome tokens, but
+        // respect `expressiveCode: false` and merge on top of user config so
+        // any override wins.
+        const userEc =
+          !starlightConfig.expressiveCode || starlightConfig.expressiveCode === true
+            ? {}
+            : starlightConfig.expressiveCode;
+
+        const expressiveCode =
+          starlightConfig.expressiveCode === false
+            ? false
+            : {
+                themes: ["github-light-default", "github-dark-default"],
+                ...userEc,
+                styleOverrides: {
+                  borderColor: "var(--sl-color-gray-5)",
+                  borderRadius: "0.5rem",
+                  ...userEc.styleOverrides,
+                  frames: {
+                    editorTabBarBorderBottomColor: "var(--sl-color-gray-5)",
+                    editorActiveTabIndicatorTopColor: "unset",
+                    editorActiveTabIndicatorBottomColor: "var(--sl-color-text-accent)",
+                    frameBoxShadowCssValue: "unset",
+                    ...userEc.styleOverrides?.frames,
+                  },
+                  textMarkers: {
+                    backgroundOpacity: "40%",
+                    ...userEc.styleOverrides?.textMarkers,
+                  },
+                },
+              };
+
         // Build component overrides — respect user overrides
         const userOverrides = config?.overrides || {};
         const components: Record<string, string> = {};
@@ -105,6 +137,7 @@ export default function starlightThemeYeti(config?: YetiThemeConfig): StarlightP
             ...components,
             ...(starlightConfig.components || {}),
           },
+          expressiveCode,
         });
       },
     },

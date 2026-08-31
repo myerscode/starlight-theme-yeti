@@ -61,6 +61,23 @@ Create `./src/styles/tailwind.css` in your project (the Tailwind entry lives in 
 @import 'tailwindcss/utilities.css' layer(utilities);
 ```
 
+## Code blocks
+
+The theme configures [Expressive Code](https://expressive-code.com/) with:
+
+- **Themes**: `github-light-default` and `github-dark-default`
+- **Style tokens**: border and radius matching the theme (`--sl-color-gray-5`, `0.5rem`), accent-coloured active tab indicator, no drop shadow, 40% text-marker opacity
+
+Everything is overridable — set `expressiveCode` in your Starlight config and your values win. Set `expressiveCode: false` to disable Expressive Code entirely.
+
+```js
+starlight({
+  plugins: [starlightThemeYeti()],
+  // Pick different Shiki themes — your values override the theme's defaults
+  expressiveCode: { themes: ['vitesse-dark', 'vitesse-light'] },
+})
+```
+
 ## Configuration
 
 The plugin accepts an optional config object to override individual components:

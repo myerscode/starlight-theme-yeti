@@ -5,8 +5,6 @@ sidebar:
   order: 2
 ---
 
-## Plugin options
-
 ### `notFoundImage`
 
 The theme brands the built-in 404 page with its own artwork. Point it at your own image, or turn it off:
@@ -20,6 +18,27 @@ starlightThemeYeti({ notFoundImage: false })
 ```
 
 A `404.md` in your project that sets a `hero.image` always wins over this option.
+
+## Code block theming
+
+The plugin also configures [Expressive Code](https://expressive-code.com/) so code blocks match the rest of the theme:
+
+- Syntax themes: `github-light-default` and `github-dark-default`
+- Chrome tokens: `--sl-color-gray-5` borders, `0.5rem` radius, accent-coloured active tab indicator, no drop shadow, 40% text-marker background opacity
+
+Anything you set in Starlight's `expressiveCode` config is deep-merged over the theme's values, so your customisations win:
+
+```js
+starlight({
+  plugins: [starlightThemeYeti()],
+  // Swap the Shiki themes without losing the theme's chrome overrides
+  expressiveCode: { themes: ['vitesse-dark', 'vitesse-light'] },
+})
+```
+
+Set `expressiveCode: false` in Starlight to disable Expressive Code entirely — the plugin respects it.
+
+## Plugin options
 
 ### `overrides`
 
