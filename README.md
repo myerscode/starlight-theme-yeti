@@ -7,6 +7,7 @@ A clean, modern [Starlight](https://starlight.astro.build/) theme with Tailwind 
 - Tailwind CSS v4 styling
 - Icon support via [`astro-icon`](https://www.astroicon.dev/) (use `[lucide:name]` syntax in sidebar labels)
 - Collapsible, linkable sidebar groups
+- Branded 404 page out of the box — add your own `src/content/docs/404.md` to replace it
 - Custom components: header, sidebar, pagination, table of contents, hero, footer and more
 
 ## Installation

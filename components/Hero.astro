@@ -1,8 +1,11 @@
 ---
 import { Image } from "astro:assets";
 import CallToAction from "./CallToAction.astro";
+// Imported as a URL so the theme never pulls the image pipeline (sharp) into consumer builds
+import notFoundArtUrl from "../assets/404.svg?url";
 
-const { data } = Astro.locals.starlightRoute.entry;
+const { entry, id } = Astro.locals.starlightRoute;
+const { data } = entry;
 const { title = data.title, tagline, image, actions = [] } = data.hero || {};
 const base = (import.meta.env.BASE_URL || '/').replace(/\/?$/, '/');
 
@@ -11,6 +14,10 @@ let darkImage: ImageMetadata | undefined;
 let lightImage: ImageMetadata | undefined;
 let rawHtml: string | undefined;
 if (image) { if ("file" in image) darkImage = image.file; else if ("dark" in image) { darkImage = image.dark; lightImage = image.light; } else rawHtml = image.html; }
+
+// Starlight's built-in 404 route renders a hero with no image — brand it with
+// the theme's artwork. A user 404 page setting its own hero image wins above.
+const notFoundArt = !image && id === "404" ? notFoundArtUrl : undefined;
 
 // Fix absolute paths in raw HTML to include base
 if (rawHtml) {
@@ -33,4 +40,5 @@ if (rawHtml) {
   {darkImage && <Image src={darkImage} {...imageAttrs} class:list={["w-full max-w-xs", { "light:sl-hidden": Boolean(lightImage) }]} />}
   {lightImage && <Image src={lightImage} {...imageAttrs} class="w-full max-w-xs dark:sl-hidden" />}
   {rawHtml && <div class="w-full max-w-xs" set:html={rawHtml} />}
+  {notFoundArt && <img src={notFoundArt} alt="" loading="eager" decoding="async" class="w-full max-w-xs" />}
 </div>
