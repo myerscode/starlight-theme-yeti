@@ -62,17 +62,33 @@ jobs:
       - name: Publish to NPM
         run: npm publish --provenance --access public
 
-      # Tag only after a successful publish, so failed runs leave nothing to clean up.
-      # Local tag is needed for changelog generation; remote ref is created via the API
+      # Commits via the GitHub API are signed by GitHub and show as Verified.
+      # Runs only after a successful publish, so failed runs leave nothing to clean up.
+      - name: Commit version bump
+        id: bump
+        uses: planetscale/ghcommit-action@v0.2.22
+        with:
+          commit_message: "chore: release ${{ steps.version.outputs.tag }}"
+          repo: ${{ github.repository }}
+          branch: main
+          file_pattern: package.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+
+      # Tag the release commit so the tagged tree matches what was published to npm.
+      # The local tag (at the checked-out HEAD) exists only for changelog generation;
+      # its range differs from the remote tag by just the chore commit, which is excluded.
       - name: Create tag
         env:
           GH_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           TAG: ${{ steps.version.outputs.tag }}
+          SHA: ${{ steps.bump.outputs.commit-hash }}
         run: |
           git tag "$TAG"
+          # If no bump commit was needed (version already on main), tag HEAD instead
           gh api "repos/${GITHUB_REPOSITORY}/git/refs" \
             -f ref="refs/tags/${TAG}" \
-            -f sha="$(git rev-parse HEAD)"
+            -f sha="${SHA:-$(git rev-parse HEAD)}"
 
       - name: Get previous tag
         id: previous
@@ -106,14 +122,3 @@ jobs:
           tag_name: ${{ steps.version.outputs.tag }}
           name: ${{ steps.version.outputs.tag }}
           body: ${{ steps.changelog.outputs.changes || 'Initial release' }}
-
-      # Commits via the GitHub API are signed by GitHub and show as Verified
-      - name: Commit version bump
-        uses: planetscale/ghcommit-action@v0.2.22
-        with:
-          commit_message: "chore: release ${{ steps.version.outputs.tag }}"
-          repo: ${{ github.repository }}
-          branch: main
-          file_pattern: package.json
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
