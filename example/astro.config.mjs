@@ -20,6 +20,13 @@ export default defineConfig({
     starlight({
       title: 'Yeti Theme',
       description: 'Demo site for the @myerscode/starlight-theme-yeti Starlight theme',
+      // Site favicon (adapts to light/dark via currentColor)
+      favicon: '/favicon.svg',
+      // Logo shown in the header, with separate light/dark variants
+      logo: {
+        light: './src/assets/logo-light.svg',
+        dark: './src/assets/logo-dark.svg',
+      },
       // Header GitHub icon (Header component)
       social: [
         { label: 'GitHub', icon: 'github', href: 'https://github.com/myerscode/starlight-theme-yeti' },
