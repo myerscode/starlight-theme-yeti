@@ -77,7 +77,21 @@ Every colour in the theme comes from Starlight's `--sl-color-*` tokens, and `pal
 starlightThemeYeti({ palette: 'blue' })
 ```
 
-See [Colour Palettes](/guides/palettes/) for screenshots of each preset. Only the selected palette is bundled into the theme's stylesheet, so there is no additional CSS request. An unknown value throws at build time. Your own `customCss` is loaded after the preset, so any `--sl-color-*` tokens you declare there still win.
+See [Colour Palettes](/guides/palettes/) for screenshots of each preset. Only the selected palette is bundled into the theme's stylesheet, so there is no additional CSS request. An unknown value throws at build time.
+
+To tweak a preset, declare the `--sl-color-*` tokens you want to change in your own `customCss`, which is loaded after the palette:
+
+```css
+/* src/styles/custom.css */
+:root {
+  --sl-color-accent: #0b6e4f;
+}
+:root[data-theme='light'] {
+  --sl-color-accent: #0a5c42;
+}
+```
+
+Keep these declarations unlayered, as above. The palette's own rules are unlayered, so they beat anything inside a cascade layer regardless of load order; in particular, Tailwind `@theme { --color-accent-* }` variables land in `@layer theme` and will not override the palette.
 
 ## `linkableGroups` sidebar helper
 
