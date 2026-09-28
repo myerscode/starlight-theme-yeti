@@ -21,7 +21,7 @@ function findIndexEntry(entries: SidebarEntry[]): Link | null {
 }
 ---
 
-<ul class:list={[nested ? "mt-1 space-y-0.5 border-l border-slate-200 pl-3 dark:border-slate-800" : "space-y-1"]}>
+<ul class:list={[nested ? "mt-1 space-y-0.5 border-l border-(--sl-color-hairline) pl-3" : "space-y-1"]}>
   {sublist.map((entry) => {
     if (entry.type === "link") {
       const { icon, text } = parseIcon(entry.label);
@@ -33,8 +33,8 @@ function findIndexEntry(entries: SidebarEntry[]): Link | null {
             class:list={[
               "flex items-center gap-2 rounded-md px-2.5 py-1.5 text-sm no-underline transition-colors",
               entry.isCurrent
-                ? "bg-indigo-50 font-medium text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-300"
-                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/50 dark:hover:text-slate-200",
+                ? "bg-(--sl-color-text-accent) font-medium text-(--sl-color-text-invert)"
+                : "text-(--sl-color-gray-3) hover:bg-(--sl-color-gray-6)/50 hover:text-(--sl-color-white)",
             ]}
           >
             {icon && <Icon name={icon} width="16" height="16" class="shrink-0 opacity-70" />}
@@ -59,7 +59,7 @@ function findIndexEntry(entries: SidebarEntry[]): Link | null {
                 aria-current={isGroupActive && "page"}
                 class:list={[
                   "flex flex-1 items-center gap-2 text-sm font-semibold no-underline transition-colors",
-                  isGroupActive ? "text-indigo-700 dark:text-indigo-300" : "text-slate-900 hover:text-indigo-700 dark:text-slate-100 dark:hover:text-indigo-300",
+                  isGroupActive ? "text-(--sl-color-text-accent)" : "text-(--sl-color-white) hover:text-(--sl-color-text-accent)",
                 ]}
                 onclick="event.stopPropagation()"
               >
@@ -67,12 +67,12 @@ function findIndexEntry(entries: SidebarEntry[]): Link | null {
                 <span>{gText}</span>
               </a>
             ) : (
-              <span class="flex flex-1 items-center gap-2 text-sm font-semibold text-slate-900 dark:text-slate-100">
+              <span class="flex flex-1 items-center gap-2 text-sm font-semibold text-(--sl-color-white)">
                 {gIcon && <Icon name={gIcon} width="16" height="16" class="shrink-0 opacity-70" />}
                 <span>{gText}</span>
               </span>
             )}
-            <svg class="h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 group-open:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" /></svg>
+            <svg class="h-4 w-4 shrink-0 text-(--sl-color-gray-3) transition-transform duration-200 group-open:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6" /></svg>
           </summary>
           <div class="ml-1 mt-1">
             <Astro.self sublist={childEntries} nested nestedCount={nestedCount + 1} />

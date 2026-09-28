@@ -8,6 +8,7 @@ A clean, modern [Starlight](https://starlight.astro.build/) theme with Tailwind 
 - Icon support via [`astro-icon`](https://www.astroicon.dev/) (use `[lucide:name]` syntax in sidebar labels)
 - Collapsible, linkable sidebar groups
 - Branded 404 page out of the box — add your own `src/content/docs/404.md` to replace it
+- Colour palettes via the `palette` option: `yeti` (default, monochrome silver) or `black`, `blue`, `green`, `orange`, `purple`, `red` or `yellow`
 - Custom components: header, sidebar, pagination, table of contents, hero, footer and more
 
 ## Installation
@@ -93,6 +94,8 @@ starlightThemeYeti({
   // Image for the built-in 404 page: a path relative to your project root,
   // or `false` to disable it. Defaults to the theme's artwork.
   notFoundImage: './src/assets/not-found.svg',
+  // Colour palette: 'yeti' (default) | 'black' | 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow'.
+  palette: 'blue',
 })
 ```
 

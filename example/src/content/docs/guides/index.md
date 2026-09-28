@@ -7,3 +7,4 @@ You landed here by clicking the **Guides** group heading in the sidebar — that
 
 - **[Getting Started](/guides/getting-started/)** — install and wire up the theme
 - **[Theme Settings](/guides/settings/)** — every plugin option and sidebar helper
+- **[Colour Palettes](/guides/palettes/)** — every preset in light and dark mode

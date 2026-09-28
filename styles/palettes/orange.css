@@ -1,0 +1,29 @@
+/* Generated with Starlight's theme-designer palette algorithm from OKLCH accent hue 55 / chroma 0.2, gray hue 55 / chroma 0.015, accent tints/text at 0.4-0.75 of the accent chroma and the accent brightened to the AA limit, with Starlight's WCAG 4.5:1 contrast fix-up — https://starlight.astro.build/guides/css-and-tailwind/ */
+:root {
+  --sl-color-white: #ffffff;
+  --sl-color-gray-1: #f1edea;
+  --sl-color-gray-2: #c6c1bd;
+  --sl-color-gray-3: #938983;
+  --sl-color-gray-4: #5f5650;
+  --sl-color-gray-5: #3f3631;
+  --sl-color-gray-6: #2d2520;
+  --sl-color-black: #1b1715;
+  --sl-color-accent-low: #3b1a00;
+  --sl-color-accent: #b65d00;
+  --sl-color-accent-high: #ffb684;
+}
+
+:root[data-theme='light'] {
+  --sl-color-white: #1b1715;
+  --sl-color-gray-1: #2d2520;
+  --sl-color-gray-2: #3f3631;
+  --sl-color-gray-3: #5f5650;
+  --sl-color-gray-4: #938983;
+  --sl-color-gray-5: #c6c1bd;
+  --sl-color-gray-6: #f1edea;
+  --sl-color-gray-7: #f8f6f4;
+  --sl-color-black: #ffffff;
+  --sl-color-accent-low: #faccae;
+  --sl-color-accent: #a65400;
+  --sl-color-accent-high: #502500;
+}

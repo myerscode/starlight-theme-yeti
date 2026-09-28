@@ -47,6 +47,7 @@ export default defineConfig({
           items: [
             { label: '[lucide:play] Getting Started', slug: 'guides/getting-started' },
             { label: '[lucide:settings] Theme Settings', slug: 'guides/settings' },
+            { label: '[lucide:palette] Colour Palettes', slug: 'guides/palettes' },
           ],
         },
         {
@@ -66,6 +67,8 @@ export default defineConfig({
           // },
           // Use your own 404 artwork (or `false` to disable it):
           // notFoundImage: './src/assets/not-found.svg',
+          // Colour palette: 'yeti' (default) | 'black' | 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow'
+          palette: 'yeti',
         }),
       ],
     }),

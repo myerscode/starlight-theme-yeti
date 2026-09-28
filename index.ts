@@ -1,5 +1,9 @@
 import type { StarlightPlugin } from "@astrojs/starlight/types";
 
+const palettes = ["yeti", "black", "blue", "green", "orange", "purple", "red", "yellow"] as const;
+
+export type YetiPalette = (typeof palettes)[number];
+
 export interface YetiThemeConfig {
   /** Override specific components. Pass `false` to disable an override. */
   overrides?: Partial<Record<string, string | false>>;
@@ -9,6 +13,12 @@ export interface YetiThemeConfig {
    * `false` to disable it. Defaults to the theme's artwork.
    */
   notFoundImage?: string | false;
+  /**
+   * Colour palette preset. `yeti` (default, monochrome silver) or `black`,
+   * `blue`, `green`, `orange`, `purple`, `red` or `yellow`. Sets
+   * Starlight's `--sl-color-*` tokens for both light and dark mode.
+   */
+  palette?: YetiPalette;
 }
 
 const PKG = "@myerscode/starlight-theme-yeti";
@@ -124,10 +134,20 @@ export default function starlightThemeYeti(config?: YetiThemeConfig): StarlightP
           components[name] = (userOverrides[name] as string) || path;
         }
 
-        // Theme CSS: virtual module for Tailwind config + theme styles
+        const palette = config?.palette ?? "yeti";
+        if (!(palettes as readonly string[]).includes(palette)) {
+          throw new Error(
+            `[${PKG}] Unknown palette "${palette}". Valid palettes: ${palettes.join(", ")}.`,
+          );
+        }
+
+        // Theme CSS: virtual module for Tailwind config + theme styles.
+        // Only the selected palette is loaded, before the user's customCss
+        // so their own overrides still win.
         const customCss = [
           `${PKG}/styles/global.css`,
           `${PKG}/styles/theme.css`,
+          `${PKG}/styles/palettes/${palette}.css`,
           ...(starlightConfig.customCss || []),
         ];
 

@@ -65,6 +65,20 @@ Resolution order for each component:
 
 See the [Components](/components/) section for what each override does.
 
+### `palette`
+
+Every colour in the theme comes from Starlight's `--sl-color-*` tokens, and `palette` picks the preset that defines them for both light and dark mode:
+
+- `yeti` (default) — monochrome silver: slate grays with a slate accent
+- `black` — black and white: a near-black page in dark mode; black text, buttons, links, banner and active sidebar item in light mode
+- `blue`, `green`, `orange`, `purple`, `red`, `yellow` — a mid-strength accent on grays tinted to match
+
+```js
+starlightThemeYeti({ palette: 'blue' })
+```
+
+See [Colour Palettes](/guides/palettes/) for screenshots of each preset. Only the selected palette is bundled into the theme's stylesheet, so there is no additional CSS request. An unknown value throws at build time. Your own `customCss` is loaded after the preset, so any `--sl-color-*` tokens you declare there still win.
+
 ## `linkableGroups` sidebar helper
 
 Starlight group headings are plain text by default. `linkableGroups` pre-processes your sidebar so groups with a `slug` get clickable headings:

@@ -16,13 +16,13 @@ function parseIcon(label: string): { icon: string | null; text: string } {
   {prev && (() => {
     const { icon, text } = parseIcon(prev.label);
     return (
-      <a href={prev.href} rel="prev" class="group flex items-center gap-3 rounded-xl border border-slate-200 p-4 no-underline transition-all hover:border-indigo-300 hover:shadow-sm dark:border-slate-700 dark:hover:border-indigo-600">
-        <svg class="h-4 w-4 shrink-0 text-slate-400 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <a href={prev.href} rel="prev" class="group flex items-center gap-3 rounded-xl border border-(--sl-color-hairline-light) p-4 no-underline transition-all hover:border-(--sl-color-accent) hover:shadow-sm">
+        <svg class="h-4 w-4 shrink-0 text-(--sl-color-gray-3) transition-colors group-hover:text-(--sl-color-text-accent)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d={isRtl ? "M9 18l6-6-6-6" : "M15 18l-6-6 6-6"} />
         </svg>
         <span class="flex flex-col">
-          <span class="text-xs text-slate-500 dark:text-slate-400">Previous</span>
-          <span class="flex items-center gap-1.5 text-sm font-medium text-slate-900 transition-colors group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400">
+          <span class="text-xs text-(--sl-color-gray-3)">Previous</span>
+          <span class="flex items-center gap-1.5 text-sm font-medium text-(--sl-color-white) transition-colors group-hover:text-(--sl-color-text-accent)">
             {icon && <Icon name={icon} width="14" height="14" class="shrink-0 opacity-70" />}
             {text}
           </span>
@@ -33,15 +33,15 @@ function parseIcon(label: string): { icon: string | null; text: string } {
   {next && (() => {
     const { icon, text } = parseIcon(next.label);
     return (
-      <a href={next.href} rel="next" class:list={["group flex items-center gap-3 rounded-xl border border-slate-200 p-4 no-underline transition-all hover:border-indigo-300 hover:shadow-sm dark:border-slate-700 dark:hover:border-indigo-600", !prev && "sm:col-start-2"]}>
+      <a href={next.href} rel="next" class:list={["group flex items-center gap-3 rounded-xl border border-(--sl-color-hairline-light) p-4 no-underline transition-all hover:border-(--sl-color-accent) hover:shadow-sm", !prev && "sm:col-start-2"]}>
         <span class="flex flex-1 flex-col text-right">
-          <span class="text-xs text-slate-500 dark:text-slate-400">Next</span>
-          <span class="flex items-center justify-end gap-1.5 text-sm font-medium text-slate-900 transition-colors group-hover:text-indigo-600 dark:text-white dark:group-hover:text-indigo-400">
+          <span class="text-xs text-(--sl-color-gray-3)">Next</span>
+          <span class="flex items-center justify-end gap-1.5 text-sm font-medium text-(--sl-color-white) transition-colors group-hover:text-(--sl-color-text-accent)">
             {icon && <Icon name={icon} width="14" height="14" class="shrink-0 opacity-70" />}
             {text}
           </span>
         </span>
-        <svg class="h-4 w-4 shrink-0 text-slate-400 transition-colors group-hover:text-indigo-600 dark:group-hover:text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg class="h-4 w-4 shrink-0 text-(--sl-color-gray-3) transition-colors group-hover:text-(--sl-color-text-accent)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d={isRtl ? "M15 18l-6-6 6-6" : "M9 18l6-6-6-6"} />
         </svg>
       </a>
