@@ -17,11 +17,11 @@ Monochrome silver: slate grays with the accent drawn from the same scale.
 
 **Light**
 
-![Yeti palette in light mode](../../../assets/palettes/yeti-light.png)
+![Yeti palette in light mode](../../../assets/palettes/yeti-light.webp)
 
 **Dark**
 
-![Yeti palette in dark mode](../../../assets/palettes/yeti-dark.png)
+![Yeti palette in dark mode](../../../assets/palettes/yeti-dark.webp)
 
 ## Black
 
@@ -29,68 +29,68 @@ Black and white with no hue: a near-black page and dark grey surfaces in dark mo
 
 **Light**
 
-![Black palette in light mode](../../../assets/palettes/black-light.png)
+![Black palette in light mode](../../../assets/palettes/black-light.webp)
 
 **Dark**
 
-![Black palette in dark mode](../../../assets/palettes/black-dark.png)
+![Black palette in dark mode](../../../assets/palettes/black-dark.webp)
 
 ## Blue
 
 **Light**
 
-![Blue palette in light mode](../../../assets/palettes/blue-light.png)
+![Blue palette in light mode](../../../assets/palettes/blue-light.webp)
 
 **Dark**
 
-![Blue palette in dark mode](../../../assets/palettes/blue-dark.png)
+![Blue palette in dark mode](../../../assets/palettes/blue-dark.webp)
 
 ## Green
 
 **Light**
 
-![Green palette in light mode](../../../assets/palettes/green-light.png)
+![Green palette in light mode](../../../assets/palettes/green-light.webp)
 
 **Dark**
 
-![Green palette in dark mode](../../../assets/palettes/green-dark.png)
+![Green palette in dark mode](../../../assets/palettes/green-dark.webp)
 
 ## Orange
 
 **Light**
 
-![Orange palette in light mode](../../../assets/palettes/orange-light.png)
+![Orange palette in light mode](../../../assets/palettes/orange-light.webp)
 
 **Dark**
 
-![Orange palette in dark mode](../../../assets/palettes/orange-dark.png)
+![Orange palette in dark mode](../../../assets/palettes/orange-dark.webp)
 
 ## Purple
 
 **Light**
 
-![Purple palette in light mode](../../../assets/palettes/purple-light.png)
+![Purple palette in light mode](../../../assets/palettes/purple-light.webp)
 
 **Dark**
 
-![Purple palette in dark mode](../../../assets/palettes/purple-dark.png)
+![Purple palette in dark mode](../../../assets/palettes/purple-dark.webp)
 
 ## Red
 
 **Light**
 
-![Red palette in light mode](../../../assets/palettes/red-light.png)
+![Red palette in light mode](../../../assets/palettes/red-light.webp)
 
 **Dark**
 
-![Red palette in dark mode](../../../assets/palettes/red-dark.png)
+![Red palette in dark mode](../../../assets/palettes/red-dark.webp)
 
 ## Yellow
 
 **Light**
 
-![Yellow palette in light mode](../../../assets/palettes/yellow-light.png)
+![Yellow palette in light mode](../../../assets/palettes/yellow-light.webp)
 
 **Dark**
 
-![Yellow palette in dark mode](../../../assets/palettes/yellow-dark.png)
+![Yellow palette in dark mode](../../../assets/palettes/yellow-dark.webp)
