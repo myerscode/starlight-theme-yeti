@@ -12,7 +12,7 @@ const { link, variant = "primary", icon } = Astro.props;
 const { class: customClass, ...attrs } = Astro.props.attrs || {};
 
 const styles: Record<string, string> = {
-  primary: "rounded-full bg-(--sl-color-accent) px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:brightness-90",
+  primary: "rounded-full bg-(--sl-color-accent) px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:ring-2 hover:ring-(--sl-color-text-accent) hover:ring-offset-2 hover:ring-offset-(--sl-color-bg)",
   secondary: "rounded-full border border-(--sl-color-gray-5) px-5 py-2.5 text-sm font-medium text-(--sl-color-text) transition hover:border-(--sl-color-accent) hover:text-(--sl-color-text-accent)",
   minimal: "text-sm font-medium text-(--sl-color-text-accent) transition hover:text-(--sl-color-white)",
 };
