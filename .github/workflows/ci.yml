@@ -24,9 +24,10 @@ jobs:
       - name: Verify package contents
         run: npm pack --dry-run
 
-      # corepack is not bundled with Node 25+, so install pnpm via npm
+      # corepack is not bundled with Node 25+, so install pnpm via npm.
+      # Keep the major in step with the pnpm that writes pnpm-lock.yaml.
       - name: Install pnpm
-        run: npm install -g pnpm@11
+        run: npm install -g pnpm@12
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
