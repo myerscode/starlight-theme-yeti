@@ -8,7 +8,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/starlight": "0.42.3",
+    "@astrojs/starlight": "0.42.5",
     "@iconify-json/lucide": "1.2.138",
     "@myerscode/starlight-theme-yeti": "workspace:*",
     "@tailwindcss/vite": "4.3.3",
