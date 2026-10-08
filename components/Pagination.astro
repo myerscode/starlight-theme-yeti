@@ -1,15 +1,10 @@
 ---
 import { Icon } from "astro-icon/components";
+import { parseIcon } from "./parse-icon";
 
 const { dir, pagination } = Astro.locals.starlightRoute;
 const { prev, next } = pagination;
 const isRtl = dir === "rtl";
-
-function parseIcon(label: string): { icon: string | null; text: string } {
-  const match = label.match(/^\[([^\]]+)\]\s*(.*)$/);
-  if (match) return { icon: match[1], text: match[2] };
-  return { icon: null, text: label };
-}
 ---
 
 <div class="grid grid-cols-1 gap-4 py-6 sm:grid-cols-2">

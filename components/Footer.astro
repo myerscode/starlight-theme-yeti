@@ -3,14 +3,13 @@ import { Icon } from "astro-icon/components";
 import Pagination from "./Pagination.astro";
 import EditLink from "./EditLink.astro";
 import LastUpdated from "./LastUpdated.astro";
+import { parseIcon } from "./parse-icon";
 // @ts-ignore — virtual module provided by the plugin's Vite integration
 import { changelog } from "virtual:starlight-theme-yeti/config";
 
 const trim = (path: string) => path.replace(/\/$/, "");
 const showChangelog = changelog?.showInFooter && trim(Astro.url.pathname) !== trim(changelog.href);
-const match = changelog?.label.match(/^\[([^\]]+)\]\s*(.*)$/);
-const icon = match?.[1];
-const text = match ? match[2] : changelog?.label;
+const { icon, text } = parseIcon(changelog?.label ?? "");
 ---
 
 <footer class="border-t border-(--sl-color-hairline)">

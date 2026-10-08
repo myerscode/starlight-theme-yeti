@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import { parseIcon } from "./parse-icon";
 
 interface Link { type: "link"; label: string; href: string; isCurrent: boolean; badge: any; attrs: Record<string, any>; }
 interface Group { type: "group"; label: string; entries: (Link | Group)[]; collapsed: boolean; badge: any; }
@@ -7,11 +8,6 @@ type SidebarEntry = Link | Group;
 
 interface Props { sublist: SidebarEntry[]; nested?: boolean; nestedCount: number; }
 const { sublist, nested, nestedCount } = Astro.props;
-
-function parseIcon(label: string) {
-  const match = label.match(/^\[([^\]]+)\]\s*(.*)$/);
-  return match ? { icon: match[1], text: match[2] } : { icon: null, text: label };
-}
 
 function findIndexEntry(entries: SidebarEntry[]): Link | null {
   for (const e of entries) if (e.type === "link" && e.attrs?.["data-index"] === "true") return e;
