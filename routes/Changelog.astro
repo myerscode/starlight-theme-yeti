@@ -9,10 +9,15 @@ const dates = new Intl.DateTimeFormat(Astro.currentLocale || "en", { dateStyle: 
 
 const hues: Record<string, string> = {
   added: "green",
+  "new features": "green",
   changed: "blue",
+  "performance improvements": "blue",
   fixed: "purple",
+  "bug fixes": "purple",
   deprecated: "orange",
+  refactors: "orange",
   removed: "red",
+  "breaking changes": "red",
   security: "security",
 };
 ---
