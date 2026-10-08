@@ -72,7 +72,7 @@ export default defineConfig({
           palette: 'yeti',
           // Changelog page from a Keep a Changelog file (a string is shorthand for `{ file }`),
           // appended as the last sidebar entry; `slug` and `label` are optional
-          changelog: { file: './CHANGELOG.md', showInFooter: true },
+          changelog: { file: '../CHANGELOG.md', showInFooter: true },
         }),
       ],
     }),

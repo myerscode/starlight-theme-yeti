@@ -122,3 +122,24 @@ jobs:
           tag_name: ${{ steps.version.outputs.tag }}
           name: ${{ steps.version.outputs.tag }}
           body: ${{ steps.changelog.outputs.changes || 'Initial release' }}
+
+      - name: Write changelog to file
+        if: steps.previous.outputs.found == 'true'
+        uses: requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          fromTag: ${{ steps.version.outputs.tag }}
+          toTag: ${{ steps.previous.outputs.tag }}
+          excludeTypes: build,docs,other,style,ci,chore
+          useGitmojis: false
+          writeToFile: true
+          changelogFilePath: CHANGELOG.md
+
+      - name: Commit changelog
+        if: steps.previous.outputs.found == 'true'
+        uses: planetscale/ghcommit-action@v0.2.22
+        with:
+          commit_message: "docs: update changelog for ${{ steps.version.outputs.tag }}"
+          repo: ${{ github.repository }}
+          branch: main
+          file_pattern: CHANGELOG.md
