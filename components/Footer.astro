@@ -1,13 +1,28 @@
 ---
+import { Icon } from "astro-icon/components";
 import Pagination from "./Pagination.astro";
 import EditLink from "./EditLink.astro";
 import LastUpdated from "./LastUpdated.astro";
+// @ts-ignore — virtual module provided by the plugin's Vite integration
+import { changelog } from "virtual:starlight-theme-yeti/config";
+
+const trim = (path: string) => path.replace(/\/$/, "");
+const showChangelog = changelog?.showInFooter && trim(Astro.url.pathname) !== trim(changelog.href);
+const match = changelog?.label.match(/^\[([^\]]+)\]\s*(.*)$/);
+const icon = match?.[1];
+const text = match ? match[2] : changelog?.label;
 ---
 
 <footer class="border-t border-(--sl-color-hairline)">
   <Pagination {...Astro.props} />
   <div class="flex items-center justify-between gap-4 px-6 pb-6 text-sm lg:px-10">
     <EditLink {...Astro.props} />
+    {showChangelog && (
+      <a href={changelog.href} class="mr-auto! inline-flex items-center gap-1.5 text-sm text-(--sl-color-gray-3) no-underline transition-colors hover:text-(--sl-color-white)">
+        {icon && <Icon name={icon} width="14" height="14" class="shrink-0" />}
+        {text}
+      </a>
+    )}
     <LastUpdated {...Astro.props} />
   </div>
 </footer>

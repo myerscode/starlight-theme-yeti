@@ -27,6 +27,7 @@
     "index.ts",
     "sidebar.ts",
     "components",
+    "routes",
     "styles",
     "assets",
     "README.md",
@@ -36,6 +37,7 @@
     ".": "./index.ts",
     "./sidebar": "./sidebar.ts",
     "./components/*": "./components/*",
+    "./routes/*": "./routes/*",
     "./styles/*": "./styles/*",
     "./assets/*": "./assets/*"
   },

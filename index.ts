@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import type { StarlightPlugin } from "@astrojs/starlight/types";
 
 const palettes = ["yeti", "black", "blue", "green", "orange", "purple", "red", "yellow"] as const;
@@ -19,6 +21,32 @@ export interface YetiThemeConfig {
    * Starlight's `--sl-color-*` tokens for both light and dark mode.
    */
   palette?: YetiPalette;
+  /**
+   * Render a Markdown changelog in the Keep a Changelog format as a styled
+   * page, linked from the end of the sidebar. A string is shorthand for
+   * `{ file }`; `false` (the default) disables it.
+   */
+  changelog?:
+    | false
+    | string
+    | {
+        /** Path to the changelog Markdown file, relative to the project root, e.g. `./CHANGELOG.md`. */
+        file: string;
+        /** Route slug. Defaults to `changelog`, so the page is served at `/changelog/`. */
+        slug?: string;
+        /** Sidebar label. Defaults to `[lucide:history] Changelog`. */
+        label?: string;
+        /** Also link to the page from the footer. Defaults to `false`. */
+        showInFooter?: boolean;
+      };
+}
+
+interface ChangelogConfig {
+  file: string;
+  slug: string;
+  label: string;
+  showInFooter: boolean;
+  href: string;
 }
 
 const PKG = "@myerscode/starlight-theme-yeti";
@@ -45,13 +73,16 @@ const defaultComponents: Record<string, string> = {
 };
 
 /**
- * Exposes plugin options to components at render time via a virtual module.
+ * Exposes plugin options to components at render time via virtual modules.
  * `notFoundImage` resolves to a bundled asset URL (or `false` when disabled).
+ * `changelog` is `null` or `{ slug, label, showInFooter, href }`; when set, a
+ * second module re-exports the user's Markdown file (`compiledContent`,
+ * `getHeadings`, …) for the changelog route.
  */
-function vitePluginYetiConfig(notFoundImage: YetiThemeConfig["notFoundImage"]) {
-  const moduleId = "virtual:starlight-theme-yeti/config";
-  const resolvedModuleId = `\0${moduleId}`;
-
+function vitePluginYetiConfig(
+  notFoundImage: YetiThemeConfig["notFoundImage"],
+  changelog: ChangelogConfig | null,
+) {
   let source: string;
   if (notFoundImage === false) {
     source = "export const notFoundImage = false;";
@@ -64,14 +95,24 @@ function vitePluginYetiConfig(notFoundImage: YetiThemeConfig["notFoundImage"]) {
           `${PKG}/assets/404.svg`;
     source = `import art from ${JSON.stringify(`${specifier}?url`)};\nexport const notFoundImage = art;`;
   }
+  const publicChangelog = changelog && {
+    slug: changelog.slug,
+    label: changelog.label,
+    showInFooter: changelog.showInFooter,
+    href: changelog.href,
+  };
+  source += `\nexport const changelog = ${JSON.stringify(publicChangelog)};`;
+
+  const modules: Record<string, string> = { "virtual:starlight-theme-yeti/config": source };
+  if (changelog) modules["virtual:starlight-theme-yeti/changelog"] = `export * from ${JSON.stringify(changelog.file)};`;
 
   return {
     name: "vite-plugin-starlight-theme-yeti-config",
     resolveId(id: string) {
-      if (id === moduleId) return resolvedModuleId;
+      if (id in modules) return `\0${id}`;
     },
     load(id: string) {
-      if (id === resolvedModuleId) return source;
+      if (id.startsWith("\0")) return modules[id.slice(1)];
     },
   };
 }
@@ -80,15 +121,49 @@ export default function starlightThemeYeti(config?: YetiThemeConfig): StarlightP
   return {
     name: "@myerscode/starlight-theme-yeti",
     hooks: {
-      "config:setup"({ config: starlightConfig, updateConfig, addIntegration }) {
-        // Integration provides the virtual config module read by components
+      "config:setup"({ config: starlightConfig, updateConfig, addIntegration, astroConfig, logger }) {
+        const changelogOption =
+          !config?.changelog
+            ? undefined
+            : typeof config.changelog === "string"
+              ? { file: config.changelog }
+              : config.changelog;
+        let changelog: ChangelogConfig | null = null;
+        if (changelogOption) {
+          const file = fileURLToPath(new URL(changelogOption.file, astroConfig.root));
+          if (!existsSync(file)) {
+            throw new Error(
+              `[${PKG}] Changelog file "${changelogOption.file}" not found (resolved to ${file}).`,
+            );
+          }
+          const slug = changelogOption.slug ?? "changelog";
+          if (!/^[a-z0-9-]+(\/[a-z0-9-]+)*$/.test(slug)) {
+            throw new Error(
+              `[${PKG}] Invalid changelog slug "${slug}". Use lowercase letters, digits and hyphens, with "/" between segments.`,
+            );
+          }
+          changelog = {
+            file,
+            slug,
+            label: changelogOption.label ?? "[lucide:history] Changelog",
+            showInFooter: changelogOption.showInFooter ?? false,
+            href: `${astroConfig.base.replace(/\/$/, "")}/${slug}/`,
+          };
+        }
+
         addIntegration({
           name: "starlight-theme-yeti-config",
           hooks: {
-            "astro:config:setup"({ updateConfig: updateAstroConfig }) {
+            "astro:config:setup"({ updateConfig: updateAstroConfig, injectRoute }) {
               updateAstroConfig({
-                vite: { plugins: [vitePluginYetiConfig(config?.notFoundImage)] },
+                vite: { plugins: [vitePluginYetiConfig(config?.notFoundImage, changelog)] },
               });
+              if (changelog) {
+                injectRoute({
+                  pattern: `/${changelog.slug}`,
+                  entrypoint: `${PKG}/routes/Changelog.astro`,
+                });
+              }
             },
           },
         });
@@ -151,6 +226,16 @@ export default function starlightThemeYeti(config?: YetiThemeConfig): StarlightP
           ...(starlightConfig.customCss || []),
         ];
 
+        const sidebar =
+          changelog && Array.isArray(starlightConfig.sidebar)
+            ? [...starlightConfig.sidebar, { label: changelog.label, link: `/${changelog.slug}/` }]
+            : undefined;
+        if (changelog && !sidebar) {
+          logger.warn(
+            "changelog: define `sidebar` in your Starlight config to show the Changelog link in navigation",
+          );
+        }
+
         updateConfig({
           customCss,
           components: {
@@ -158,6 +243,7 @@ export default function starlightThemeYeti(config?: YetiThemeConfig): StarlightP
             ...(starlightConfig.components || {}),
           },
           expressiveCode,
+          ...(sidebar && { sidebar }),
         });
       },
     },

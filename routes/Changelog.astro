@@ -1,0 +1,132 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+// @ts-ignore — virtual module provided by the plugin's Vite integration
+import { compiledContent, getHeadings } from "virtual:starlight-theme-yeti/changelog";
+import { parseChangelog } from "./changelog";
+
+const { title, intro, releases } = parseChangelog(await compiledContent(), getHeadings());
+const dates = new Intl.DateTimeFormat(Astro.currentLocale || "en", { dateStyle: "medium", timeZone: "UTC" });
+
+const hues: Record<string, string> = {
+  added: "green",
+  changed: "blue",
+  fixed: "purple",
+  deprecated: "orange",
+  removed: "red",
+  security: "security",
+};
+---
+
+<StarlightPage
+  frontmatter={{ title, tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 2 } }}
+  headings={releases.map(({ slug, version }) => ({ depth: 2, slug, text: version }))}
+>
+  {intro && <div class="intro" set:html={intro} />}
+  {releases.map((release) => (
+    <article class="release">
+      <div class="meta">
+        <h2 id={release.slug} class:list={["version", { unreleased: release.version.toLowerCase() === "unreleased" }]}>
+          {release.href ? <a href={release.href}>{release.version}</a> : release.version}
+        </h2>
+        {release.date && <time datetime={release.date}>{dates.format(new Date(release.date))}</time>}
+        {release.yanked && <span class="badge red">Yanked</span>}
+      </div>
+      <div class="notes sl-markdown-content">
+        {release.intro && <Fragment set:html={release.intro} />}
+        {release.sections.map((section) => (
+          <section>
+            <h3 class:list={["badge", hues[section.title.toLowerCase()] || "grey"]}>{section.title}</h3>
+            <Fragment set:html={section.html} />
+          </section>
+        ))}
+      </div>
+    </article>
+  ))}
+</StarlightPage>
+
+<style>
+  .intro {
+    max-width: 65ch;
+    color: var(--sl-color-gray-2);
+  }
+
+  .release {
+    display: grid;
+    gap: 0.75rem 2.5rem;
+    align-items: start;
+    margin: 0;
+    padding: 2rem 0;
+  }
+  .release + .release {
+    border-top: 1px solid var(--sl-color-hairline);
+  }
+
+  @media (min-width: 48rem) {
+    .release {
+      grid-template-columns: 11rem minmax(0, 1fr);
+    }
+    .meta {
+      position: sticky;
+      top: 5.5rem;
+    }
+  }
+
+  .meta .version {
+    margin: 0;
+    font-family: var(--sl-font-mono, var(--sl-font-system-mono));
+    font-size: var(--sl-text-2xl);
+    font-weight: 600;
+    line-height: var(--sl-line-height-headings);
+    color: var(--sl-color-white);
+    overflow-wrap: anywhere;
+  }
+  .meta .version a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .meta .version a:hover {
+    text-decoration: underline;
+  }
+  .meta .unreleased {
+    color: var(--sl-color-text-accent);
+  }
+  .meta time {
+    display: block;
+    margin-top: 0.375rem;
+    font-size: var(--sl-text-sm);
+    color: var(--sl-color-gray-3);
+  }
+  .meta .badge {
+    margin-top: 0.75rem;
+  }
+
+  .notes {
+    margin: 0;
+  }
+  .notes section + section {
+    margin-top: 1.25rem;
+  }
+
+  .release .badge {
+    display: inline-block;
+    margin: 0 0 0.5rem;
+    padding: 0.125rem 0.625rem;
+    border: 1px solid var(--badge-border);
+    border-radius: 9999px;
+    background: var(--badge-bg);
+    color: var(--badge-text);
+    font-size: var(--sl-text-xs);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .release .badge + :global(*) {
+    margin-top: 0;
+  }
+  .green { --badge-border: var(--sl-color-green); --badge-bg: var(--sl-color-green-low); --badge-text: var(--sl-color-green-high); }
+  .blue { --badge-border: var(--sl-color-blue); --badge-bg: var(--sl-color-blue-low); --badge-text: var(--sl-color-blue-high); }
+  .purple { --badge-border: var(--sl-color-purple); --badge-bg: var(--sl-color-purple-low); --badge-text: var(--sl-color-purple-high); }
+  .orange { --badge-border: var(--sl-color-orange); --badge-bg: var(--sl-color-orange-low); --badge-text: var(--sl-color-orange-high); }
+  .red { --badge-border: var(--sl-color-red); --badge-bg: var(--sl-color-red-low); --badge-text: var(--sl-color-red-high); }
+  .security { --badge-border: var(--sl-color-red); --badge-bg: var(--sl-color-orange-low); --badge-text: var(--sl-color-red-high); }
+  .grey { --badge-border: var(--sl-color-gray-4); --badge-bg: var(--sl-color-gray-6); --badge-text: var(--sl-color-gray-1); }
+</style>

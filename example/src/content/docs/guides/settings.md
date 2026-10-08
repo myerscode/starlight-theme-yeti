@@ -93,6 +93,32 @@ To tweak a preset, declare the `--sl-color-*` tokens you want to change in your 
 
 Keep these declarations unlayered, as above. The palette's own rules are unlayered, so they beat anything inside a cascade layer regardless of load order; in particular, Tailwind `@theme { --color-accent-* }` variables land in `@layer theme` and will not override the palette.
 
+### `changelog`
+
+Point the theme at a Markdown changelog written in the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format and it renders the file as a styled page inside the normal Starlight frame: each release is a row with the version and date on the left and the notes on the right, with `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` and `Security` sections shown as coloured badges. The right-hand table of contents lists the versions, `[Unreleased]` is highlighted and `[YANKED]` releases are flagged. Reference definitions at the bottom of the file (`[1.1.0]: https://…/compare/v1.0.0...v1.1.0`) turn each version into a link, as on this site's [Changelog](/changelog/).
+
+```js
+// A string is shorthand for `{ file }`
+starlightThemeYeti({ changelog: './CHANGELOG.md' })
+
+// Omitted or `false` (the default) means no changelog page
+starlightThemeYeti({ changelog: false })
+
+// or with every option
+starlightThemeYeti({
+  changelog: {
+    file: './CHANGELOG.md',              // relative to your project root; must exist
+    slug: 'changelog',                   // page is served at /changelog/ (default)
+    label: '[lucide:history] Changelog', // sidebar label; `[icon-set:name]` icons work (default)
+    showInFooter: true,                  // also link to it next to "Edit page" (default: false)
+  },
+})
+```
+
+The link is appended as the **last** entry of your `sidebar` config. If you leave `sidebar` unset and let Starlight autogenerate it, there is nothing to append to: the plugin logs a warning and the page is still built and reachable at its URL (and from the footer with `showInFooter`). A missing file or a `slug` that is not lowercase letters, digits, hyphens and `/` fails the build with a clear error.
+
+The page is served at a single root-locale route; there are no per-locale changelogs.
+
 ## `linkableGroups` sidebar helper
 
 Starlight group headings are plain text by default. `linkableGroups` pre-processes your sidebar so groups with a `slug` get clickable headings:

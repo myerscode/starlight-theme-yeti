@@ -2,7 +2,8 @@
  * Example site for @myerscode/starlight-theme-yeti.
  *
  * Demonstrates every theme setting: the plugin, the `overrides` option,
- * the `linkableGroups` sidebar helper, and `[lucide:*]` sidebar icons.
+ * the `linkableGroups` sidebar helper, `[lucide:*]` sidebar icons and the
+ * `changelog` page.
  */
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
@@ -69,6 +70,9 @@ export default defineConfig({
           // notFoundImage: './src/assets/not-found.svg',
           // Colour palette: 'yeti' (default) | 'black' | 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow'
           palette: 'yeti',
+          // Changelog page from a Keep a Changelog file (a string is shorthand for `{ file }`),
+          // appended as the last sidebar entry; `slug` and `label` are optional
+          changelog: { file: './CHANGELOG.md', showInFooter: true },
         }),
       ],
     }),
