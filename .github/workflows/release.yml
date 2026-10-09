@@ -143,3 +143,5 @@ jobs:
           repo: ${{ github.repository }}
           branch: main
           file_pattern: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
