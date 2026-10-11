@@ -1,0 +1,57 @@
+---
+import { Icon } from "astro-icon/components";
+// @ts-ignore — virtual module provided by the plugin's Vite integration
+import { pageActions } from "virtual:starlight-theme-yeti/config";
+
+const { entry } = Astro.locals.starlightRoute;
+const markdown = entry.body ?? "";
+const pageUrl = Astro.site ? `${Astro.site.href.replace(/\/$/, "")}${Astro.url.pathname}` : null;
+const prompt = pageUrl && encodeURIComponent(`Read ${pageUrl} so I can ask questions about it.`);
+
+const showCopy = pageActions.copyMarkdown && markdown;
+const showAi = pageUrl && (pageActions.openInChatGPT || pageActions.openInClaude);
+const linkClass = "inline-flex items-center gap-1.5 text-sm text-(--sl-color-gray-3) no-underline transition-colors hover:text-(--sl-color-white)";
+---
+
+{(showCopy || showAi) && (
+  <div class="flex items-center gap-4">
+    {showCopy && (
+      <button type="button" data-copy-markdown class={`${linkClass} cursor-pointer bg-transparent p-0`}>
+        <Icon name="lucide:copy" width="14" height="14" class="shrink-0" />
+        <span data-label>Copy as Markdown</span>
+      </button>
+    )}
+    {showAi && pageActions.openInChatGPT && (
+      <a href={`https://chatgpt.com/?q=${prompt}`} target="_blank" rel="noopener" class={linkClass}>
+        <Icon name="lucide:message-square" width="14" height="14" class="shrink-0" />
+        Open in ChatGPT
+      </a>
+    )}
+    {showAi && pageActions.openInClaude && (
+      <a href={`https://claude.ai/new?q=${prompt}`} target="_blank" rel="noopener" class={linkClass}>
+        <Icon name="lucide:sparkles" width="14" height="14" class="shrink-0" />
+        Open in Claude
+      </a>
+    )}
+  </div>
+)}
+
+{showCopy && (
+  <>
+    <script type="text/plain" data-page-markdown set:html={markdown} />
+    <script is:inline>
+      (function () {
+        const button = document.querySelector('[data-copy-markdown]');
+        const source = document.querySelector('[data-page-markdown]');
+        if (!button || !source) return;
+        const label = button.querySelector('[data-label]');
+        const original = label.textContent;
+        button.addEventListener('click', async () => {
+          await navigator.clipboard.writeText(source.textContent);
+          label.textContent = 'Copied';
+          setTimeout(() => (label.textContent = original), 1500);
+        });
+      })();
+    </script>
+  </>
+)}

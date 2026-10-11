@@ -106,6 +106,25 @@ starlightThemeYeti({
 })
 ```
 
+### `pageActions`
+
+Adds actions to the page footer next to the edit link. `copyMarkdown` copies the page's Markdown source to the clipboard, useful for pasting into an AI assistant. `openInChatGPT` and `openInClaude` open the assistant with a prompt pointing at the page's URL; they need Astro's `site` option to build that URL and are hidden without it.
+
+```js
+export default defineConfig({
+  site: 'https://docs.example.com',
+  integrations: [
+    starlight({
+      plugins: [
+        starlightThemeYeti({
+          pageActions: { copyMarkdown: true, openInChatGPT: true, openInClaude: true },
+        }),
+      ],
+    }),
+  ],
+})
+```
+
 ### `changelog`
 
 Point the theme at a Markdown changelog written in the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format and it renders the file as a styled page inside the normal Starlight frame: each release is a row with the version and date on the left and the notes on the right, with `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` and `Security` sections shown as coloured badges. The right-hand table of contents lists the versions, `[Unreleased]` is highlighted and `[YANKED]` releases are flagged. Reference definitions at the bottom of the file (`[1.1.0]: https://…/compare/v1.0.0...v1.1.0`) turn each version into a link, as on this site's [Changelog](/changelog/).

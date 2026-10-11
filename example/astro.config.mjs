@@ -13,6 +13,7 @@ import starlightThemeYeti from '@myerscode/starlight-theme-yeti';
 import { linkableGroups } from '@myerscode/starlight-theme-yeti/sidebar';
 
 export default defineConfig({
+  site: 'https://myerscode.github.io/starlight-theme-yeti',
   vite: {
     plugins: [tailwindcss()],
   },
@@ -80,6 +81,8 @@ export default defineConfig({
             { label: '[lucide:blocks] Components', href: '/components/' },
             { label: '[lucide:package] npm', href: 'https://www.npmjs.com/package/@myerscode/starlight-theme-yeti' },
           ],
+          // Footer actions: copy the page source, or open it in an AI assistant (needs `site`)
+          pageActions: { copyMarkdown: true, openInChatGPT: true, openInClaude: true },
           // Changelog page from a Keep a Changelog file (a string is shorthand for `{ file }`).
           // Linked from the sidebar (see the 'Release Notes' entry above); `slug` and `label` are optional
           changelog: { file: '../CHANGELOG.md', showInFooter: true },

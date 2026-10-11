@@ -28,6 +28,12 @@ export interface YetiThemeConfig {
    */
   headerLinks?: { label: string; href: string }[];
   /**
+   * Actions shown in the page footer next to the edit link. `copyMarkdown`
+   * copies the page source to the clipboard; the AI actions open the page in
+   * ChatGPT or Claude and need Astro's `site` option for an absolute URL.
+   */
+  pageActions?: { copyMarkdown?: boolean; openInChatGPT?: boolean; openInClaude?: boolean };
+  /**
    * Render a Markdown changelog in the Keep a Changelog format as a styled
    * page, linked from the end of the sidebar. A string is shorthand for
    * `{ file }`; `false` (the default) disables it.
@@ -121,6 +127,7 @@ function vitePluginYetiConfig(
   notFoundImage: YetiThemeConfig["notFoundImage"],
   changelog: ChangelogConfig | null,
   headerLinks: YetiThemeConfig["headerLinks"],
+  pageActions: YetiThemeConfig["pageActions"],
 ) {
   let source: string;
   if (notFoundImage === false) {
@@ -143,6 +150,7 @@ function vitePluginYetiConfig(
   };
   source += `\nexport const changelog = ${JSON.stringify(publicChangelog)};`;
   source += `\nexport const headerLinks = ${JSON.stringify(headerLinks ?? [])};`;
+  source += `\nexport const pageActions = ${JSON.stringify(pageActions ?? {})};`;
 
   const modules: Record<string, string> = { "virtual:starlight-theme-yeti/config": source };
   if (changelog) modules["virtual:starlight-theme-yeti/changelog"] = `export * from ${JSON.stringify(changelog.file)};`;
@@ -202,7 +210,7 @@ export default function starlightThemeYeti(config?: YetiThemeConfig): StarlightP
           hooks: {
             "astro:config:setup"({ updateConfig: updateAstroConfig, injectRoute }) {
               updateAstroConfig({
-                vite: { plugins: [vitePluginYetiConfig(config?.notFoundImage, changelog, config?.headerLinks)] },
+                vite: { plugins: [vitePluginYetiConfig(config?.notFoundImage, changelog, config?.headerLinks, config?.pageActions)] },
               });
               if (changelog) {
                 injectRoute({
