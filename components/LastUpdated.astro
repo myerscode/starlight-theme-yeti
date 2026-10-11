@@ -1,9 +1,9 @@
 ---
-const { lastUpdated } = Astro.locals.starlightRoute;
+const { lastUpdated, lang } = Astro.locals.starlightRoute;
 ---
 
 {lastUpdated && (
   <p class="m-0 text-sm text-(--sl-color-gray-3)">
-    Updated <time datetime={lastUpdated.toISOString()}>{lastUpdated.toLocaleDateString('en', { dateStyle: 'medium' })}</time>
+    {Astro.locals.t("page.lastUpdated")} <time datetime={lastUpdated.toISOString()}>{lastUpdated.toLocaleDateString(lang, { dateStyle: 'medium' })}</time>
   </p>
 )}

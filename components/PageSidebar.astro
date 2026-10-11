@@ -5,7 +5,7 @@ const hasToc = toc && toc.items.length > 0;
 ---
 
 {hasToc && (
-  <nav aria-label="On this page">
+  <nav aria-label={Astro.locals.t("tableOfContents.onThisPage")}>
     <TableOfContents {...Astro.props} />
   </nav>
 )}

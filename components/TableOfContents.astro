@@ -5,7 +5,7 @@ const { toc } = Astro.locals.starlightRoute;
 {toc && (
   <starlight-toc data-min-h={toc.minHeadingLevel} data-max-h={toc.maxHeadingLevel}>
     <nav aria-labelledby="starlight__on-this-page" class="toc">
-      <h2 id="starlight__on-this-page" class="toc-heading">On this page</h2>
+      <h2 id="starlight__on-this-page" class="toc-heading">{Astro.locals.t("tableOfContents.onThisPage")}</h2>
       <ul class="toc-list">
         {toc.items.map((heading) => (
           <li>

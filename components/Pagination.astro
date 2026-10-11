@@ -16,7 +16,7 @@ const isRtl = dir === "rtl";
           <path d={isRtl ? "M9 18l6-6-6-6" : "M15 18l-6-6 6-6"} />
         </svg>
         <span class="flex flex-col">
-          <span class="text-xs text-(--sl-color-gray-3)">Previous</span>
+          <span class="text-xs text-(--sl-color-gray-3)">{Astro.locals.t("page.previousLink")}</span>
           <span class="flex items-center gap-1.5 text-sm font-medium text-(--sl-color-white) transition-colors group-hover:text-(--sl-color-text-accent)">
             {icon && <Icon name={icon} width="14" height="14" class="shrink-0 opacity-70" />}
             {text}
@@ -30,7 +30,7 @@ const isRtl = dir === "rtl";
     return (
       <a href={next.href} rel="next" class:list={["group flex items-center gap-3 rounded-xl border border-(--sl-color-hairline-light) p-4 no-underline transition-all hover:border-(--sl-color-accent) hover:shadow-sm", !prev && "sm:col-start-2"]}>
         <span class="flex flex-1 flex-col text-right">
-          <span class="text-xs text-(--sl-color-gray-3)">Next</span>
+          <span class="text-xs text-(--sl-color-gray-3)">{Astro.locals.t("page.nextLink")}</span>
           <span class="flex items-center justify-end gap-1.5 text-sm font-medium text-(--sl-color-white) transition-colors group-hover:text-(--sl-color-text-accent)">
             {icon && <Icon name={icon} width="14" height="14" class="shrink-0 opacity-70" />}
             {text}
