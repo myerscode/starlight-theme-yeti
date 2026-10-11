@@ -31,3 +31,21 @@ const entries =
     <MobileMenuFooter {...Astro.props} />
   </div>
 </div>
+
+<script is:inline>
+  (function () {
+    const key = 'yeti-sidebar-groups';
+    let state = {};
+    try { state = JSON.parse(localStorage.getItem(key) || '{}'); } catch {}
+
+    document.querySelectorAll('details[data-group]').forEach((details) => {
+      const name = details.dataset.group;
+      // A stored choice never hides the group holding the current page
+      if (name in state && !details.dataset.current) details.open = state[name];
+      details.addEventListener('toggle', () => {
+        state[name] = details.open;
+        localStorage.setItem(key, JSON.stringify(state));
+      });
+    });
+  })();
+</script>

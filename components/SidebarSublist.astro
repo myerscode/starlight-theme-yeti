@@ -48,11 +48,12 @@ function findIndexEntry(entries: SidebarEntry[]): Link | null {
     const childEntries = indexEntry ? entry.entries.filter(e => e !== indexEntry) : entry.entries;
     const { icon: gIcon, text: gText } = parseIcon(entry.label);
     const isGroupActive = indexEntry?.isCurrent || false;
-    const isOpen = !entry.collapsed || containsCurrent(entry.entries);
+    const hasCurrent = containsCurrent(entry.entries);
+    const isOpen = !entry.collapsed || hasCurrent;
 
     return (
       <li class={!nested ? "pt-3 first:pt-0" : ""}>
-        <details open={isOpen} class="group">
+        <details open={isOpen} class="group" data-group={gText} data-current={hasCurrent || undefined}>
           <summary class="flex cursor-pointer list-none items-center justify-between gap-1 rounded-md px-2.5 py-1.5 [&::-webkit-details-marker]:hidden">
             {indexEntry ? (
               <a
