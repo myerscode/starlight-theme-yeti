@@ -10,6 +10,7 @@ A clean, modern [Starlight](https://starlight.astro.build/) theme with Tailwind 
 - Branded 404 page out of the box — add your own `src/content/docs/404.md` to replace it
 - Colour palettes via the `palette` option: `yeti` (default, monochrome silver) or `black`, `blue`, `green`, `orange`, `purple`, `red` or `yellow`
 - Changelog page via the `changelog` option: renders a [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) file with per-release badges, linked from the sidebar (auto-generated or custom)
+- Header navigation via the `headerLinks` option, with icon support and current-page highlighting
 - Custom components: header, sidebar, pagination, table of contents, hero, footer and more
 
 ## Installation

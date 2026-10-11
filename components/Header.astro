@@ -3,9 +3,20 @@ import { logos } from 'virtual:starlight/user-images';
 import config from 'virtual:starlight/user-config';
 import Search from "virtual:starlight/components/Search";
 import SocialIcons from "virtual:starlight/components/SocialIcons";
+import { Icon } from "astro-icon/components";
 import ThemeSelect from "./ThemeSelect.astro";
+import { parseIcon } from "./parse-icon";
+// @ts-ignore — virtual module provided by the plugin's Vite integration
+import { headerLinks } from "virtual:starlight-theme-yeti/config";
 
 const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
+const trim = (path: string) => path.replace(/\/$/, "");
+const links = headerLinks.map((link: { label: string; href: string }) => ({
+  ...parseIcon(link.label),
+  href: link.href,
+  external: /^https?:\/\//.test(link.href),
+  current: trim(Astro.url.pathname) === trim(link.href),
+}));
 ---
 
 <div class="flex w-full items-center justify-between gap-6 px-2">
@@ -33,6 +44,28 @@ const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
     )}
     <span class:list={{ "sr-only": config.logo?.replacesTitle }}>{siteTitle}</span>
   </a>
+
+  {links.length > 0 && (
+    <nav aria-label="Header" class="hidden md:flex flex-1 items-center gap-1">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          aria-current={link.current && "page"}
+          target={link.external ? "_blank" : undefined}
+          rel={link.external ? "noopener" : undefined}
+          class:list={[
+            "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm font-medium no-underline transition-colors",
+            link.current
+              ? "text-(--sl-color-white)"
+              : "text-(--sl-color-gray-3) hover:bg-(--sl-color-gray-6)/50 hover:text-(--sl-color-white)",
+          ]}
+        >
+          {link.icon && <Icon name={link.icon} width="16" height="16" class="shrink-0 opacity-70" />}
+          {link.text}
+        </a>
+      ))}
+    </nav>
+  )}
 
   <!-- Right side -->
   <div class="flex items-center gap-5">

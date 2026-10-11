@@ -74,6 +74,12 @@ export default defineConfig({
           // notFoundImage: './src/assets/not-found.svg',
           // Colour palette: 'yeti' (default) | 'black' | 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow'
           palette: 'yeti',
+          // Links shown in the header next to the title; external URLs open in a new tab
+          headerLinks: [
+            { label: '[lucide:book-open] Guides', href: '/guides/' },
+            { label: '[lucide:blocks] Components', href: '/components/' },
+            { label: '[lucide:package] npm', href: 'https://www.npmjs.com/package/@myerscode/starlight-theme-yeti' },
+          ],
           // Changelog page from a Keep a Changelog file (a string is shorthand for `{ file }`).
           // Linked from the sidebar (see the 'Release Notes' entry above); `slug` and `label` are optional
           changelog: { file: '../CHANGELOG.md', showInFooter: true },

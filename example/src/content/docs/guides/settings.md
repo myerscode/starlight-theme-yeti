@@ -93,6 +93,19 @@ To tweak a preset, declare the `--sl-color-*` tokens you want to change in your 
 
 Keep these declarations unlayered, as above. The palette's own rules are unlayered, so they beat anything inside a cascade layer regardless of load order; in particular, Tailwind `@theme { --color-accent-* }` variables land in `@layer theme` and will not override the palette.
 
+### `headerLinks`
+
+Adds top-level navigation links to the header, between the site title and search. Labels accept the same `[icon-set:name] Text` syntax as the sidebar, the link matching the current page is highlighted, and external URLs open in a new tab. The links are hidden on small screens, where the mobile menu covers navigation.
+
+```js
+starlightThemeYeti({
+  headerLinks: [
+    { label: '[lucide:book-open] Guides', href: '/guides/' },
+    { label: '[lucide:package] npm', href: 'https://www.npmjs.com/package/@myerscode/starlight-theme-yeti' },
+  ],
+})
+```
+
 ### `changelog`
 
 Point the theme at a Markdown changelog written in the [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format and it renders the file as a styled page inside the normal Starlight frame: each release is a row with the version and date on the left and the notes on the right, with `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` and `Security` sections shown as coloured badges. The right-hand table of contents lists the versions, `[Unreleased]` is highlighted and `[YANKED]` releases are flagged. Reference definitions at the bottom of the file (`[1.1.0]: https://…/compare/v1.0.0...v1.1.0`) turn each version into a link, as on this site's [Changelog](/changelog/).
