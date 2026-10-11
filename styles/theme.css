@@ -84,3 +84,15 @@
 .sl-markdown-content .expressive-code {
   margin-bottom: 1em;
 }
+
+/* Respect reduced-motion preferences across every component */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
