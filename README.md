@@ -9,7 +9,7 @@ A clean, modern [Starlight](https://starlight.astro.build/) theme with Tailwind 
 - Collapsible, linkable sidebar groups
 - Branded 404 page out of the box — add your own `src/content/docs/404.md` to replace it
 - Colour palettes via the `palette` option: `yeti` (default, monochrome silver) or `black`, `blue`, `green`, `orange`, `purple`, `red` or `yellow`
-- Changelog page via the `changelog` option: renders a [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) file with per-release badges, linked from the end of the sidebar
+- Changelog page via the `changelog` option: renders a [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) file with per-release badges, linked from the sidebar (auto-generated or custom)
 - Custom components: header, sidebar, pagination, table of contents, hero, footer and more
 
 ## Installation
@@ -97,11 +97,30 @@ starlightThemeYeti({
   notFoundImage: './src/assets/not-found.svg',
   // Colour palette: 'yeti' (default) | 'black' | 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow'.
   palette: 'blue',
-  // Keep a Changelog file rendered at /changelog/ and appended to the sidebar
+  // Keep a Changelog file rendered at /changelog/ and linked from the sidebar
   // (a string is shorthand for `{ file }`; `slug`, `label` and `showInFooter` are optional).
   changelog: { file: './CHANGELOG.md', showInFooter: true },
 })
 ```
+
+### Changelog placement
+
+The changelog link works with both sidebar modes:
+
+- **Auto-generated sidebar** (no `sidebar` config): the link is appended to the end of the navigation.
+- **Custom sidebar**: the link is appended to the end by default. To position it yourself, add an entry pointing at the changelog anywhere in your sidebar — the theme wires it to the rendered page, keeping your position and label:
+
+  ```js
+  sidebar: [
+    { label: 'Guides', items: [{ autogenerate: { directory: 'guides' } }] },
+    { label: '[lucide:history] Release Notes', slug: 'changelog' },
+    { label: 'Reference', items: [{ autogenerate: { directory: 'reference' } }] },
+  ],
+  ```
+
+  Either `slug: 'changelog'` or `link: '/changelog/'` is recognised (matching your `changelog.slug` if customised). The changelog is an injected route rather than a content page, so without this rewiring a bare `slug` entry would fail Starlight's validation.
+
+If you replace the theme's `Sidebar` component via `overrides` and use an auto-generated sidebar, the theme can't add the link for you — define `sidebar` or set `showInFooter: true`.
 
 ## Example
 

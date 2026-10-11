@@ -1,12 +1,32 @@
 ---
 import MobileMenuFooter from "virtual:starlight/components/MobileMenuFooter";
 import SidebarSublist from "./SidebarSublist.astro";
+// @ts-ignore — virtual module provided by the plugin's Vite integration
+import { changelog } from "virtual:starlight-theme-yeti/config";
 
 const { sidebar } = Astro.locals.starlightRoute;
+
+// With Starlight's auto-generated sidebar the plugin has no config array to
+// add the changelog link to, so append it at render time instead.
+const trim = (path: string) => path.replace(/\/$/, "");
+const entries =
+  changelog && !changelog.inSidebar
+    ? [
+        ...sidebar,
+        {
+          type: "link" as const,
+          label: changelog.label,
+          href: changelog.href,
+          isCurrent: trim(Astro.url.pathname) === trim(changelog.href),
+          badge: undefined,
+          attrs: {},
+        },
+      ]
+    : sidebar;
 ---
 
 <div class="flex h-full flex-col px-3 py-4">
-  <SidebarSublist sublist={sidebar} nestedCount={0} />
+  <SidebarSublist sublist={entries} nestedCount={0} />
   <div class="mt-auto border-t border-(--sl-color-hairline) pt-4 md:hidden">
     <MobileMenuFooter {...Astro.props} />
   </div>

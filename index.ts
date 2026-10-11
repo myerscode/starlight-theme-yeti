@@ -47,6 +47,38 @@ interface ChangelogConfig {
   label: string;
   showInFooter: boolean;
   href: string;
+  /** Whether the link was wired into the sidebar config (vs. rendered by the Sidebar component). */
+  inSidebar: boolean;
+}
+
+/**
+ * Wires the changelog into a user-defined sidebar. The changelog is an injected
+ * route rather than a content entry, so an entry pointing at it with `slug`
+ * would fail Starlight's validation; rewrite any such entry (or a matching
+ * `link`) in place so the user's position and label are respected. When no
+ * entry exists, append the link at the end.
+ */
+function wireChangelogLink(sidebar: any[], changelog: ChangelogConfig): any[] {
+  const link = `/${changelog.slug}/`;
+  const normalise = (path: string) => path.replace(/^\/+|\/+$/g, "");
+  const isChangelog = (entry: any) =>
+    entry?.slug === changelog.slug ||
+    (typeof entry?.link === "string" && normalise(entry.link) === changelog.slug);
+
+  let found = false;
+  const rewire = (entries: any[]): any[] =>
+    entries.map((entry) => {
+      if (isChangelog(entry)) {
+        found = true;
+        const { slug: _slug, link: _link, ...rest } = entry;
+        return { ...rest, label: entry.label ?? changelog.label, link };
+      }
+      if (Array.isArray(entry?.items)) return { ...entry, items: rewire(entry.items) };
+      return entry;
+    });
+
+  const entries = rewire(sidebar);
+  return found ? entries : [...entries, { label: changelog.label, link }];
 }
 
 const PKG = "@myerscode/starlight-theme-yeti";
@@ -100,6 +132,7 @@ function vitePluginYetiConfig(
     label: changelog.label,
     showInFooter: changelog.showInFooter,
     href: changelog.href,
+    inSidebar: changelog.inSidebar,
   };
   source += `\nexport const changelog = ${JSON.stringify(publicChangelog)};`;
 
@@ -148,6 +181,11 @@ export default function starlightThemeYeti(config?: YetiThemeConfig): StarlightP
             label: changelogOption.label ?? "[lucide:history] Changelog",
             showInFooter: changelogOption.showInFooter ?? false,
             href: `${astroConfig.base.replace(/\/$/, "")}/${slug}/`,
+            // A user-defined sidebar can carry the link (so it also takes part
+            // in prev/next pagination). Starlight's auto-generated sidebar has
+            // no config array to extend, so the Sidebar component renders the
+            // link itself in that case.
+            inSidebar: Array.isArray(starlightConfig.sidebar),
           };
         }
 
@@ -227,12 +265,12 @@ export default function starlightThemeYeti(config?: YetiThemeConfig): StarlightP
         ];
 
         const sidebar =
-          changelog && Array.isArray(starlightConfig.sidebar)
-            ? [...starlightConfig.sidebar, { label: changelog.label, link: `/${changelog.slug}/` }]
+          changelog?.inSidebar && Array.isArray(starlightConfig.sidebar)
+            ? wireChangelogLink(starlightConfig.sidebar, changelog)
             : undefined;
-        if (changelog && !sidebar) {
+        if (changelog && !changelog.inSidebar && userOverrides.Sidebar !== undefined) {
           logger.warn(
-            "changelog: define `sidebar` in your Starlight config to show the Changelog link in navigation",
+            "changelog: the sidebar is auto-generated and the theme's Sidebar component is overridden, so no navigation link was added. Define `sidebar` in your Starlight config or set `changelog.showInFooter`.",
           );
         }
 

@@ -41,6 +41,10 @@ export default defineConfig({
       sidebar: linkableGroups([
         { label: '[lucide:home] Welcome', slug: '' },
         { label: '[lucide:sparkles] Showcase', slug: 'showcase' },
+        // The changelog is an injected route, not a content page: the theme
+        // rewires this entry to the rendered page, keeping its position and label.
+        // Omit it and the link is appended to the end of the sidebar instead.
+        { label: '[lucide:history] Release Notes', slug: 'changelog' },
         {
           // Group with slug + items: heading links to guides/index
           label: '[lucide:book-open] Guides',
@@ -70,8 +74,8 @@ export default defineConfig({
           // notFoundImage: './src/assets/not-found.svg',
           // Colour palette: 'yeti' (default) | 'black' | 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow'
           palette: 'yeti',
-          // Changelog page from a Keep a Changelog file (a string is shorthand for `{ file }`),
-          // appended as the last sidebar entry; `slug` and `label` are optional
+          // Changelog page from a Keep a Changelog file (a string is shorthand for `{ file }`).
+          // Linked from the sidebar (see the 'Release Notes' entry above); `slug` and `label` are optional
           changelog: { file: '../CHANGELOG.md', showInFooter: true },
         }),
       ],
