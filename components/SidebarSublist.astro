@@ -9,6 +9,10 @@ type SidebarEntry = Link | Group;
 interface Props { sublist: SidebarEntry[]; nested?: boolean; nestedCount: number; }
 const { sublist, nested, nestedCount } = Astro.props;
 
+function containsCurrent(entries: SidebarEntry[]): boolean {
+  return entries.some((e) => (e.type === "link" ? e.isCurrent : containsCurrent(e.entries)));
+}
+
 function findIndexEntry(entries: SidebarEntry[]): Link | null {
   for (const e of entries) if (e.type === "link" && e.attrs?.["data-index"] === "true") return e;
   const links = entries.filter((e): e is Link => e.type === "link");
@@ -44,10 +48,11 @@ function findIndexEntry(entries: SidebarEntry[]): Link | null {
     const childEntries = indexEntry ? entry.entries.filter(e => e !== indexEntry) : entry.entries;
     const { icon: gIcon, text: gText } = parseIcon(entry.label);
     const isGroupActive = indexEntry?.isCurrent || false;
+    const isOpen = !entry.collapsed || containsCurrent(entry.entries);
 
     return (
       <li class={!nested ? "pt-3 first:pt-0" : ""}>
-        <details open class="group">
+        <details open={isOpen} class="group">
           <summary class="flex cursor-pointer list-none items-center justify-between gap-1 rounded-md px-2.5 py-1.5 [&::-webkit-details-marker]:hidden">
             {indexEntry ? (
               <a
