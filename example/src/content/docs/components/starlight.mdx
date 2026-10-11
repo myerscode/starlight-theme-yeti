@@ -1,0 +1,53 @@
+---
+title: Starlight Components
+description: Card, LinkCard, Steps and Tabs restyled to match the theme
+sidebar:
+  order: 6
+---
+
+import { Card, CardGrid, LinkCard, Steps, Tabs, TabItem } from '@astrojs/starlight/components';
+
+Starlight's built-in content components keep working as normal. The theme restyles them so they sit alongside its own chrome: the same corner radius, hairline borders and accent colour as the rest of the site.
+
+## Cards
+
+<CardGrid>
+  <Card title="Palettes" icon="star">
+    Eight colour presets, switched with a single `palette` option.
+  </Card>
+  <Card title="Changelog" icon="document">
+    Render a Keep a Changelog file as a styled page with release badges.
+  </Card>
+</CardGrid>
+
+## Link cards
+
+<LinkCard title="Theme Settings" description="Every plugin option, with examples." href="/guides/settings/" />
+<LinkCard title="Colour Palettes" description="Each preset in light and dark mode." href="/guides/palettes/" />
+
+## Steps
+
+<Steps>
+
+1. Install the theme and its peer dependencies.
+
+2. Register `starlightThemeYeti()` in your Starlight plugins.
+
+3. Pick a `palette` and point `changelog` at your `CHANGELOG.md`.
+
+</Steps>
+
+## Tabs
+
+<Tabs>
+  <TabItem label="npm">
+    ```sh
+    npm install @myerscode/starlight-theme-yeti
+    ```
+  </TabItem>
+  <TabItem label="pnpm">
+    ```sh
+    pnpm add @myerscode/starlight-theme-yeti
+    ```
+  </TabItem>
+</Tabs>
