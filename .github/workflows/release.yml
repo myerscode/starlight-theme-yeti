@@ -75,6 +75,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
 
+      # The bump commit was created server-side via the API, so the local
+      # checkout is behind main and does not have that commit. Fetch and reset
+      # to it so the later changelog commit chains onto it rather than the
+      # stale checkout HEAD (which otherwise fails ghcommit's parent check).
+      - name: Sync local checkout
+        if: steps.bump.outputs.commit-hash
+        env:
+          SHA: ${{ steps.bump.outputs.commit-hash }}
+        run: |
+          git fetch origin main
+          git reset --hard "$SHA"
+
       # Tag the release commit so the tagged tree matches what was published to npm.
       # The local tag (at the checked-out HEAD) exists only for changelog generation;
       # its range differs from the remote tag by just the chore commit, which is excluded.
