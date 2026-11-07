@@ -16,7 +16,7 @@ importers:
         version: 0.42.7(astro@7.4.5(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
       '@astrojs/starlight-tailwind':
         specifier: ^5.0.0
-        version: 5.0.0(@astrojs/starlight@0.42.7(astro@7.4.5(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1)))(tailwindcss@4.3.3)
+        version: 5.0.0(@astrojs/starlight@0.42.7(astro@7.4.5(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1)))(tailwindcss@4.3.4)
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.4(vite@8.3.5(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
@@ -28,7 +28,7 @@ importers:
         version: 1.2.0
       tailwindcss:
         specifier: ^4.3.3
-        version: 4.3.3
+        version: 4.3.4
 
   example:
     dependencies:
@@ -51,8 +51,8 @@ importers:
         specifier: 1.2.0
         version: 1.2.0
       tailwindcss:
-        specifier: 4.3.3
-        version: 4.3.3
+        specifier: 4.3.4
+        version: 4.3.4
     devDependencies:
       sharp:
         specifier: 0.35.5
@@ -1556,9 +1556,6 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  tailwindcss@4.3.3:
-    resolution: {integrity: sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==}
-
   tailwindcss@4.3.4:
     resolution: {integrity: sha512-PCJZTFFdG+sL3gvnP1Do9o6GbkvH2q0p04xSs3f7cSvmAeK+sttG+/7ncK1fdRwKFfC7n+wDDJaOMBSefkI9ow==}
 
@@ -1899,10 +1896,10 @@ snapshots:
       sitemap: 9.0.1
       zod: 4.6.6
 
-  '@astrojs/starlight-tailwind@5.0.0(@astrojs/starlight@0.42.7(astro@7.4.5(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1)))(tailwindcss@4.3.3)':
+  '@astrojs/starlight-tailwind@5.0.0(@astrojs/starlight@0.42.7(astro@7.4.5(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1)))(tailwindcss@4.3.4)':
     dependencies:
       '@astrojs/starlight': 0.42.7(astro@7.4.5(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
-      tailwindcss: 4.3.3
+      tailwindcss: 4.3.4
 
   '@astrojs/starlight@0.42.7(astro@7.4.5(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
@@ -3451,8 +3448,6 @@ snapshots:
       csso: 5.0.5
       picocolors: 1.1.1
       sax: 1.6.1
-
-  tailwindcss@4.3.3: {}
 
   tailwindcss@4.3.4: {}
 
