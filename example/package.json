@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@astrojs/starlight": "0.42.7",
-    "@iconify-json/lucide": "1.2.147",
+    "@iconify-json/lucide": "1.2.151",
     "@myerscode/starlight-theme-yeti": "workspace:*",
     "@tailwindcss/vite": "4.3.4",
     "astro": "7.4.5",
