@@ -16,7 +16,7 @@ importers:
         version: 0.42.10(astro@7.4.10(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
       '@astrojs/starlight-tailwind':
         specifier: ^5.0.0
-        version: 5.0.0(@astrojs/starlight@0.42.10(astro@7.4.10(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1)))(tailwindcss@4.3.4)
+        version: 5.0.0(@astrojs/starlight@0.42.10(astro@7.4.10(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1)))(tailwindcss@4.3.5)
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.4(vite@8.3.8(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
@@ -28,7 +28,7 @@ importers:
         version: 1.2.0
       tailwindcss:
         specifier: ^4.3.3
-        version: 4.3.4
+        version: 4.3.5
 
   example:
     dependencies:
@@ -51,8 +51,8 @@ importers:
         specifier: 1.2.0
         version: 1.2.0
       tailwindcss:
-        specifier: 4.3.4
-        version: 4.3.4
+        specifier: 4.3.5
+        version: 4.3.5
     devDependencies:
       sharp:
         specifier: 0.35.5
@@ -1709,6 +1709,9 @@ packages:
   tailwindcss@4.3.4:
     resolution: {integrity: sha512-PCJZTFFdG+sL3gvnP1Do9o6GbkvH2q0p04xSs3f7cSvmAeK+sttG+/7ncK1fdRwKFfC7n+wDDJaOMBSefkI9ow==}
 
+  tailwindcss@4.3.5:
+    resolution: {integrity: sha512-FcQk9BuffmEHJP2G0XmB2SplU1aLTI7j07Kunk+U74Ny+XiWOtzXz9aujFZ/avntw1e2cOv/3PkgzflQ7gX2vQ==}
+
   tapable@2.3.3:
     resolution: {integrity: sha512-uxc/zpqFg6x7C8vOE7lh6Lbda8eEL9zmVm/PLeTPBRhh1xCgdWaQ+J1CUieGpIfm2HdtsUpRv+HshiasBMcc6A==}
     engines: {node: '>=6'}
@@ -2036,10 +2039,10 @@ snapshots:
       sitemap: 9.0.1
       zod: 4.6.7
 
-  '@astrojs/starlight-tailwind@5.0.0(@astrojs/starlight@0.42.10(astro@7.4.10(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1)))(tailwindcss@4.3.4)':
+  '@astrojs/starlight-tailwind@5.0.0(@astrojs/starlight@0.42.10(astro@7.4.10(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1)))(tailwindcss@4.3.5)':
     dependencies:
       '@astrojs/starlight': 0.42.10(astro@7.4.10(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
-      tailwindcss: 4.3.4
+      tailwindcss: 4.3.5
 
   '@astrojs/starlight@0.42.10(astro@7.4.10(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
@@ -3709,6 +3712,8 @@ snapshots:
       sax: 1.6.1
 
   tailwindcss@4.3.4: {}
+
+  tailwindcss@4.3.5: {}
 
   tapable@2.3.3: {}
 
